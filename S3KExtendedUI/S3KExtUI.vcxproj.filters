@@ -14,9 +14,6 @@
     <Filter Include="Source Files\Objects\Menu">
       <UniqueIdentifier>{cadbca1c-4ab3-44a6-a8b8-206de6ca78fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Objects\Headers">
-      <UniqueIdentifier>{88b74f6e-5001-4ae5-bc46-716c2a2a3df8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Objects\Helpers">
       <UniqueIdentifier>{88c23c1f-8e32-491e-b9fe-1315667ccaa3}</UniqueIdentifier>
     </Filter>
@@ -95,15 +92,6 @@
     </ClInclude>
     <ClInclude Include="include.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Global\ActClear.h">
-      <Filter>Source Files\Objects\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Global\Music.h">
-      <Filter>Source Files\Objects\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Global\Zone.h">
-      <Filter>Source Files\Objects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Menu\S3K_SaveMenu.h">
       <Filter>Source Files\Objects\Menu</Filter>

@@ -197,13 +197,10 @@
     <ClInclude Include="ext.h" />
     <ClInclude Include="include.h" />
     <ClInclude Include="cfg.h" />
-    <ClInclude Include="Objects\Global\ActClear.h" />
     <ClInclude Include="Objects\Global\HUD.h" />
-    <ClInclude Include="Objects\Global\Music.h" />
     <ClInclude Include="Objects\Global\PauseMenu.h" />
     <ClInclude Include="Objects\Global\Player.h" />
     <ClInclude Include="Objects\Global\VirtualDPad.h" />
-    <ClInclude Include="Objects\Global\Zone.h" />
     <ClInclude Include="Objects\Helpers\TouchHelpers.h" />
     <ClInclude Include="Objects\Menu\LevelSelect.h" />
     <ClInclude Include="Objects\Menu\S3K_MenuSetup.h" />
