@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="GameAPI">
+      <UniqueIdentifier>{2b00ea04-a1d3-4639-b021-f84d63a0646a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{9b88fa3c-dbdc-46ab-877a-404c6a3c8534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Menu">
+      <UniqueIdentifier>{cadbca1c-4ab3-44a6-a8b8-206de6ca78fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Headers">
+      <UniqueIdentifier>{88b74f6e-5001-4ae5-bc46-716c2a2a3df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Helpers">
+      <UniqueIdentifier>{88c23c1f-8e32-491e-b9fe-1315667ccaa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Title">
+      <UniqueIdentifier>{7a933011-22e9-4321-896e-23af3ced0adb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Global">
+      <UniqueIdentifier>{0e22f850-9325-4ba4-91bb-1680cb0a95c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Special">
+      <UniqueIdentifier>{68c8f1bf-9630-476e-bd9f-c4eec2f51d47}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameAPI\C\GameAPI\Game.c">
+      <Filter>GameAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Menu\S3K_SaveMenu.c">
+      <Filter>Source Files\Objects\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="ext.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Helpers\TouchHelpers.c">
+      <Filter>Source Files\Objects\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Menu\LevelSelect.c">
+      <Filter>Source Files\Objects\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Title\TitleElement.c">
+      <Filter>Source Files\Objects\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Title\TitleSeq.c">
+      <Filter>Source Files\Objects\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Global\VirtualDPad.c">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Special\S3K_SS_HUD.c">
+      <Filter>Source Files\Objects\Special</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Menu\S3K_MenuSetup.c">
+      <Filter>Source Files\Objects\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Special\S3K_SS_Player.c">
+      <Filter>Source Files\Objects\Special</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Global\Player.c">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Global\HUD.c">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Global\PauseMenu.c">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\GameAPI\C\GameAPI\Game.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="cfg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\ActClear.h">
+      <Filter>Source Files\Objects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\Music.h">
+      <Filter>Source Files\Objects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\Zone.h">
+      <Filter>Source Files\Objects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Menu\S3K_SaveMenu.h">
+      <Filter>Source Files\Objects\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ext.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Helpers\TouchHelpers.h">
+      <Filter>Source Files\Objects\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Menu\LevelSelect.h">
+      <Filter>Source Files\Objects\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Title\TitleElement.h">
+      <Filter>Source Files\Objects\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Title\TitleSeq.h">
+      <Filter>Source Files\Objects\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\VirtualDPad.h">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Special\S3K_SS_HUD.h">
+      <Filter>Source Files\Objects\Special</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Menu\S3K_MenuSetup.h">
+      <Filter>Source Files\Objects\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Special\S3K_SS_Player.h">
+      <Filter>Source Files\Objects\Special</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\Player.h">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\HUD.h">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\PauseMenu.h">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
