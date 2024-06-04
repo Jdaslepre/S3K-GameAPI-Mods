@@ -16,10 +16,10 @@ void Player_Init(void) {
 bool32 Player_Input_Gamepad_Hook(bool32 skippedState) {
     RSDK_THIS(Player);
 
-    if (cfg.useTouch && RSDK.GetEntitySlot(self) == SLOT_PLAYER1)
+    if (cfg.useTouch && self->controllerID == CONT_P1)
         VirtualDPad_HandleInput(self->controllerID, 240, NULL, ScreenInfo->size.x, 40, NULL, NULL);
 
-    if (ControllerInfo[0].keyStart.press || UnknownInfo->pausePress) {
+    if (ControllerInfo[CONT_ANY].keyStart.press || UnknownInfo->pausePress) {
         if (SceneInfo->state == ENGINESTATE_REGULAR) {
             EntityPauseMenu *pauseMenu = RSDK_GET_ENTITY(SLOT_PAUSEMENU, PauseMenu);
             bool32 allowPause          = true;

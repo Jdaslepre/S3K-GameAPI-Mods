@@ -25,9 +25,6 @@ void HUD_Create(void *data) {
 
     VirtualDPad_Create(self);
     Mod.Super(HUD->classID, SUPER_CREATE, data);
-    self->scorePos.x += 0x10000;
-    self->timePos.x += 0x10000;
-    self->ringsPos.x += 0x10000;
     self->lifePos.x = TO_FIXED(ScreenInfo->size.x - 64);
     self->lifePos.y = 0x180000;
 }

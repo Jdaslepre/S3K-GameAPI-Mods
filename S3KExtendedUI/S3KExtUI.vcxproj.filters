@@ -26,6 +26,9 @@
     <Filter Include="Source Files\Objects\Special">
       <UniqueIdentifier>{68c8f1bf-9630-476e-bd9f-c4eec2f51d47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Objects\BS_Slot">
+      <UniqueIdentifier>{718615da-d2e9-47ba-b729-4bb8eecae6a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c">
@@ -72,6 +75,12 @@
     </ClCompile>
     <ClCompile Include="Objects\Global\PauseMenu.c">
       <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\BS_Slot\S1SS_Player.c">
+      <Filter>Source Files\Objects\BS_Slot</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\BS_Slot\SlotHUD.c">
+      <Filter>Source Files\Objects\BS_Slot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +140,12 @@
     </ClInclude>
     <ClInclude Include="Objects\Global\PauseMenu.h">
       <Filter>Source Files\Objects\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\BS_Slot\S1SS_Player.h">
+      <Filter>Source Files\Objects\BS_Slot</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\BS_Slot\SlotHUD.h">
+      <Filter>Source Files\Objects\BS_Slot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

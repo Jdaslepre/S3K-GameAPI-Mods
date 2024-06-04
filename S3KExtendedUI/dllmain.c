@@ -24,6 +24,10 @@ void InitModAPI(void) {
 
     MOD_REGISTER_OBJECT_HOOK(TitleCard);
     
+    // BS_Slot
+    S1SS_Player_Init();
+    SlotHUD_Init();
+
     // Global
     HUD_Init();
     PauseMenu_Init();

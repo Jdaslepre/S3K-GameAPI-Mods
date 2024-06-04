@@ -9,15 +9,15 @@ str_VirtualDPad VirtualDPad;
 // ----------------------
 
 void VirtualDPad_Draw(void) {
-    int32 prevAlpha = VirtualDPad.parent->alpha;
-    int32 prevInk   = VirtualDPad.parent->inkEffect;
+    if (SceneInfo->activeCategory == StageCategorySpecial)
+        RSDK.SetActivePalette(3, 0, 255);
+
+    int32 prevInfo[2];
+    prevInfo[0] = VirtualDPad.parent->alpha;
+    prevInfo[1] = VirtualDPad.parent->inkEffect;
 
     VirtualDPad.parent->alpha     = VirtualDPad.fade;
     VirtualDPad.parent->inkEffect = INK_ALPHA;
-
-    RSDK.SetActivePalette(7, 0, 255);
-    color colorStore[59];
-    for (int32 count = 0; count < 58; ++count) colorStore[count] = RSDK.GetPaletteEntry(7, count);
 
     RSDKControllerState *controller = &ControllerInfo[CONT_P1];
 
@@ -26,15 +26,11 @@ void VirtualDPad_Draw(void) {
     dpadPos.y = 160 << 16;
 
     Vector2 buttonAPos;
-    buttonAPos.x       = VirtualDPad.AButtonXPos;
-    buttonAPos.y       = 176 << 16;
+    buttonAPos.x = VirtualDPad.AButtonXPos;
+    buttonAPos.y = 176 << 16;
 
-    int32 pauseX =
-        TO_FIXED(ScreenInfo->size.x - 85); // S3K_SS_Player::sVars ? TO_FIXED(screenInfo->center.x - 8) : TO_FIXED(screenInfo->size.x - 85);
+    int32 pauseX     = S3K_SS_Player ? TO_FIXED(ScreenInfo->center.x - 8) : TO_FIXED(ScreenInfo->size.x - 85);
     Vector2 pausePos = { pauseX, TO_FIXED(8) };
-
-    // set our custom palette entries
-    VirtualDPad_InitPalette();
 
     // if we aren't paused, and player 1 has control, draw as normal
     if (SceneInfo->state < ENGINESTATE_FROZEN && !VirtualDPad.nullInputState) {
@@ -84,11 +80,11 @@ void VirtualDPad_Draw(void) {
     VirtualDPad.animator.frameID = DPAD_BUTTON_PAUSE;
     RSDK.DrawSprite(&VirtualDPad.animator, &pausePos, true);
 
-    for (int32 count = 0; count < 58; ++count) RSDK.SetPaletteEntry(7, count, colorStore[count]);
-    RSDK.SetActivePalette(0, 0, 255);
+    VirtualDPad.parent->alpha     = prevInfo[0];
+    VirtualDPad.parent->inkEffect = prevInfo[1];
 
-    VirtualDPad.parent->alpha     = prevAlpha;
-    VirtualDPad.parent->inkEffect = prevInk;
+    if (SceneInfo->activeCategory == StageCategorySpecial)
+        RSDK.SetActivePalette(0, 0, 255);
 }
 
 void VirtualDPad_Create(void *data) {
@@ -110,92 +106,62 @@ void VirtualDPad_StageLoad(void) { VirtualDPad.aniFrames = RSDK.LoadSpriteAnimat
 // Extra Entity Functions
 // ----------------------
 
-void VirtualDPad_InitPalette(void) {
-    // CD Colors
-    RSDK.SetPaletteEntry(7, 6, 0xE0E0E0);
-    RSDK.SetPaletteEntry(7, 7, 0xA0A0A0);
-    RSDK.SetPaletteEntry(7, 8, 0x808080);
-    RSDK.SetPaletteEntry(7, 9, 0x404040);
-    RSDK.SetPaletteEntry(7, 11, 0xA06040);
-    RSDK.SetPaletteEntry(7, 15, 0xE0E000);
-    RSDK.SetPaletteEntry(7, 43, 0x002020);
-    RSDK.SetPaletteEntry(7, 44, 0x204040);
-    RSDK.SetPaletteEntry(7, 45, 0x406060);
-    RSDK.SetPaletteEntry(7, 58, 0xE0A000);
-
-    /*
-    // Mania Colors
-    RSDK.SetPaletteEntry(7, 6, 0xE0E0E0);
-    RSDK.SetPaletteEntry(7, 7, 0xA0A0A0);
-    RSDK.SetPaletteEntry(7, 8, 0x587090);
-    RSDK.SetPaletteEntry(7, 9, 0x282028);
-    RSDK.SetPaletteEntry(7, 11, 0xA06040);
-    RSDK.SetPaletteEntry(7, 15, 0xE0E000);
-    RSDK.SetPaletteEntry(7, 43, 0x000000);
-    RSDK.SetPaletteEntry(7, 44, 0x282028);
-    RSDK.SetPaletteEntry(7, 45, 0x484868);
-    RSDK.SetPaletteEntry(7, 58, 0xE0A000);
-    */
-}
-
 void VirtualDPad_HandleInput(int32 controllerID, int32 x1, int32 y1, int32 x2, int32 y2, int32 *fx, int32 *fy) {
-    if (controllerID < PLAYER_COUNT) {
-        RSDKControllerState *controller = &ControllerInfo[controllerID];
+    // if (controllerID < PLAYER_COUNT) {
+    RSDKControllerState *controller = &ControllerInfo[controllerID];
 
-        // this function call handles the dpad part of our touch controls
-        int32 result = TouchHelpers_CheckTouchRect(0, 96, ScreenInfo->center.x, ScreenInfo->size.y, NULL, NULL);
+    // this function call handles the dpad part of our touch controls
+    int32 result = TouchHelpers_CheckTouchRect(0, 96, ScreenInfo->center.x, ScreenInfo->size.y, NULL, NULL);
 
-        if (result > -1) { // if it returns a value over -1 (if we're actually touching something), continue
+    if (result > -1) { // if it returns a value over -1 (if we're actually touching something), continue
 
-            int32 touchX = (int32)(TouchInfo->x[result] * ScreenInfo->size.x) - 48;  // 48 here is the dpad's x position, move to options
-            int32 touchY = (int32)(TouchInfo->y[result] * ScreenInfo->size.y) - 192; // 192 here is the dpad's y position, move to options
+        int32 touchX = (int32)(TouchInfo->x[result] * ScreenInfo->size.x) - 48;  // 48 here is the dpad's x position, move to options
+        int32 touchY = (int32)(TouchInfo->y[result] * ScreenInfo->size.y) - 192; // 192 here is the dpad's y position, move to options
 
-            RSDK.ATan2(touchX, touchY);
+        // I think there's a problem with this, it might not work near the bottom of the screen? check v4 player script
+        switch (((RSDK.ATan2(touchX, touchY) + 32) & 255) >> 6) {
+            case 0: controller->keyRight.down = true; break;
 
-            // I think there's a problem with this, it might not work near the bottom of the screen? check v4 player script
-            switch (((RSDK.ATan2(touchX, touchY) + 32) & 255) >> 6) {
-                case 0: controller->keyRight.down = true; break;
+            case 1: controller->keyDown.down = true; break;
 
-                case 1: controller->keyDown.down = true; break;
+            case 2: controller->keyLeft.down = true; break;
 
-                case 2: controller->keyLeft.down = true; break;
-
-                case 3: controller->keyUp.down = true; break;
-            }
+            case 3: controller->keyUp.down = true; break;
         }
-
-        // check if we're touching the jump region
-        if (TouchHelpers_CheckTouchRect(ScreenInfo->center.x, 96, ScreenInfo->size.x, 240, NULL, NULL) >= 0) {
-            ControllerInfo->keyA.down |= true;
-            controller->keyA.down = true; // do the thing
-            VirtualDPad.isJumpHeld = true;
-        }
-
-        if (!VirtualDPad.touchJump && VirtualDPad.isJumpHeld) { // check if we don't currently have our keyA button held, but we'd like to do that
-            ControllerInfo->keyA.press |= ControllerInfo->keyA.down;
-            controller->keyA.press |= controller->keyA.down;
-        }
-
-        VirtualDPad.touchJump = controller->keyA.down; // initialize our touchJump variable with a KeyA.down check
-
-        bool32 touchedDebug = false;
-        if (globals->medalMods == MEDAL_DEBUGMODE) {
-
-            if (TouchHelpers_CheckTouchRect(0, 0, 112, 56, NULL, NULL) > -1) {
-                ControllerInfo->keyX.down |= true;
-                controller->keyX.down = true;
-                touchedDebug          = true;
-            }
-
-            if (VirtualDPad.touchDebug == false) {
-                ControllerInfo->keyX.press |= ControllerInfo->keyX.down;
-                controller->keyX.press |= controller->keyX.down;
-            }
-
-            VirtualDPad.touchDebug = controller->keyX.down;
-        }
-
-        if (TouchHelpers_CheckTouchRect(x1, 0, x2, y2, fx, fy) > -1)
-            controller->keyStart.press = true;
     }
+
+    // check if we're touching the jump region
+    if (TouchHelpers_CheckTouchRect(ScreenInfo->center.x, 96, ScreenInfo->size.x, 240, NULL, NULL) >= 0) {
+        ControllerInfo->keyA.down |= true;
+        controller->keyA.down  = true; // do the thing
+        VirtualDPad.isJumpHeld = true;
+    }
+
+    if (!VirtualDPad.touchJump && VirtualDPad.isJumpHeld) { // check if we don't currently have our keyA button held, but we'd like to do that
+        ControllerInfo->keyA.press |= ControllerInfo->keyA.down;
+        controller->keyA.press |= controller->keyA.down;
+    }
+
+    VirtualDPad.touchJump = controller->keyA.down; // initialize our touchJump variable with a KeyA.down check
+
+    bool32 touchedDebug = false;
+    if (globals->medalMods == MEDAL_DEBUGMODE) {
+
+        if (TouchHelpers_CheckTouchRect(0, 0, 112, 56, NULL, NULL) > -1) {
+            ControllerInfo->keyX.down |= true;
+            controller->keyX.down = true;
+            touchedDebug          = true;
+        }
+
+        if (VirtualDPad.touchDebug == false) {
+            ControllerInfo->keyX.press |= ControllerInfo->keyX.down;
+            controller->keyX.press |= controller->keyX.down;
+        }
+
+        VirtualDPad.touchDebug = controller->keyX.down;
+    }
+
+    if (TouchHelpers_CheckTouchRect(x1, 0, x2, y2, fx, fy) > -1)
+        controller->keyStart.press = true;
+    // }
 }

@@ -176,6 +176,8 @@
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="dllmain.c" />
     <ClCompile Include="ext.c" />
+    <ClCompile Include="Objects\BS_Slot\S1SS_Player.c" />
+    <ClCompile Include="Objects\BS_Slot\SlotHUD.c" />
     <ClCompile Include="Objects\Global\HUD.c" />
     <ClCompile Include="Objects\Global\PauseMenu.c" />
     <ClCompile Include="Objects\Global\Player.c" />
@@ -197,6 +199,8 @@
     <ClInclude Include="ext.h" />
     <ClInclude Include="include.h" />
     <ClInclude Include="cfg.h" />
+    <ClInclude Include="Objects\BS_Slot\S1SS_Player.h" />
+    <ClInclude Include="Objects\BS_Slot\SlotHUD.h" />
     <ClInclude Include="Objects\Global\HUD.h" />
     <ClInclude Include="Objects\Global\PauseMenu.h" />
     <ClInclude Include="Objects\Global\Player.h" />
