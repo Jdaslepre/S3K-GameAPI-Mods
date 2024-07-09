@@ -59,7 +59,7 @@ RSDK::APIFunctionTable *RSDK::APITable;
 #if RETRO_USE_MOD_LOADER
 RSDK::ModFunctionTable *RSDK::modTable;
 
-const char* RSDK::Mod::modID = ":Unknown Mod ID:";
+const char* RSDK::Mod::modID = "Sonic 3 & Knuckles";
 #endif
 
 RSDK::SceneInfo *RSDK::sceneInfo = nullptr;

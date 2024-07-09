@@ -42,9 +42,7 @@ RSDKScreenInfo *ScreenInfo = NULL;
 // GAME VARIABLES
 // -------------------------
 
-#if (GAME_IS_MANIA || GAME_IS_S3) && !defined(GAME_NO_GLOBALS)
 GlobalVariables *globals;
-#endif
 
 // -------------------------
 // LINK GAME/MOD LOGIC

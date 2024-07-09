@@ -26,7 +26,7 @@ void S3K_SaveMenu_BackButton(void) {
         ModS3K_SaveMenu->backAlpha         = 224;
         ModS3K_SaveMenu->backActionPending = true;
         ModS3K_SaveMenu->backPrevTouch     = true;
-    } else if (ModS3K_SaveMenu->backPrevTouch && TouchHelpers_CheckTouchRect(0, 0, ScreenInfo->size.x, ScreenInfo->size.y, NULL, NULL) >= 0) {
+    } else if (ModS3K_SaveMenu->backPrevTouch && TouchHelpers_CheckAnyTouch() >= 0) {
         // check if we slid off the button, so cancel the scene transition
 
         ModS3K_SaveMenu->backAlpha         = 255;

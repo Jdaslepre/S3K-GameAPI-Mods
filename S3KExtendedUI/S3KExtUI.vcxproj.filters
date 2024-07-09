@@ -82,6 +82,9 @@
     <ClCompile Include="Objects\BS_Slot\SlotHUD.c">
       <Filter>Source Files\Objects\BS_Slot</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\Global\DebugMode.c">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameAPI\C\GameAPI\Game.h">
@@ -146,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="Objects\BS_Slot\SlotHUD.h">
       <Filter>Source Files\Objects\BS_Slot</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\DebugMode.h">
+      <Filter>Source Files\Objects\Global</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

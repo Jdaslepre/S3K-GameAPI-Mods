@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Types.hpp"
+#include "../Types.hpp"
+#include "../EngineAPI.hpp"
 
 namespace RSDK
 {
@@ -10,6 +11,15 @@ enum EngineStates {
     ENGINESTATE_REGULAR,
     ENGINESTATE_PAUSED,
     ENGINESTATE_FROZEN,
+    ENGINESTATE_STEPOVER = 4,
+    ENGINESTATE_DEVMENU  = 8,
+    ENGINESTATE_VIDEOPLAYBACK,
+    ENGINESTATE_SHOWIMAGE,
+#if RETRO_REV02
+    ENGINESTATE_ERRORMSG,
+    ENGINESTATE_ERRORMSG_FATAL,
+#endif
+    ENGINESTATE_NONE,
 };
 
 struct SceneListInfo {
@@ -24,9 +34,10 @@ struct SceneListEntry {
     uint32 hash[4];
     char name[0x20];
     char folder[0x10];
-    char id[0x08];
+    char id[0x04];
 #if RETRO_REV02
     uint8 filter;
+    uint8 padding[3];
 #endif
 };
 
@@ -59,7 +70,6 @@ struct SceneInfo {
 
 namespace Stage
 {
-
 inline bool32 CheckSceneFolder(const char *folderName) { return RSDKTable->CheckSceneFolder(folderName); }
 inline bool32 CheckValidScene() { return RSDKTable->CheckValidScene(); }
 inline void SetScene(const char *categoryName, const char *sceneName) { RSDKTable->SetScene(categoryName, sceneName); }

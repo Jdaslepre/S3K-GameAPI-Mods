@@ -1,18 +1,20 @@
 #pragma once
 
-#include "Types.hpp"
+#include "../Types.hpp"
+#include "../EngineAPI.hpp"
+#include "Sprite.hpp"
 
-#define SCREEN_XMAX    (1280)
-#define SCREEN_YSIZE   (240)
 #define SCREEN_YCENTER (SCREEN_YSIZE / 2)
 
 #define LAYER_COUNT     (8)
 #define DRAWGROUP_COUNT (16)
 
+#ifndef SCREEN_COUNT
 #if RETRO_REV02
 #define SCREEN_COUNT (4)
 #else
 #define SCREEN_COUNT (2)
+#endif
 #endif
 
 #define CAMERA_COUNT (4)
@@ -22,6 +24,8 @@ namespace RSDK
 enum DrawFX { FX_NONE = 0, FX_FLIP = 1, FX_ROTATE = 2, FX_SCALE = 4 };
 
 enum FlipFlags { FLIP_NONE, FLIP_X, FLIP_Y, FLIP_XY };
+
+enum Alignments { ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER };
 
 enum InkEffects {
     INK_NONE,
@@ -99,7 +103,7 @@ struct Palette {
     }
 
 #if RETRO_REV02
-    void SetLimitedFade(uint32 *srcColorsA, uint32 *srcColorsB, int32 blendAmount, int32 startIndex, int32 count)
+    void BlendColors(uint32 *srcColorsA, uint32 *srcColorsB, int32 blendAmount, int32 startIndex, int32 count)
     {
         RSDKTable->BlendColors(id, srcColorsA, srcColorsB, blendAmount, startIndex, count);
     }
@@ -161,7 +165,7 @@ inline void DrawDeformedSprite(SpriteSheet sheet, int32 inkEffect, bool32 screen
 
 inline void DrawTile(Tile *tiles, int32 countX, int32 countY, Vector2 *position, Vector2 *offset, bool32 screenRelative)
 {
-    RSDKTable->DrawTile((uint16*)tiles, countX, countY, position, offset, screenRelative);
+    RSDKTable->DrawTile((uint16 *)tiles, countX, countY, position, offset, screenRelative);
 }
 
 inline void CopyTile(uint16 dest, uint16 src, uint16 count) { RSDKTable->CopyTile(dest, src, count); }

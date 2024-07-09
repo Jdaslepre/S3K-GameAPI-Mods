@@ -12,6 +12,19 @@ void PauseMenu_Update(void) {
 
     StateMachine_Run(self->state);
     RSDK.ProcessAnimation(&self->selectionAnimator);
+
+    RSDKControllerState *controller = &ControllerInfo[CONT_P1];
+    RSDKAnalogState *stick          = &AnalogStickInfoL[CONT_P1];
+
+    self->up = controller->keyUp.press;
+    self->up |= stick->keyUp.press;
+
+    self->down = controller->keyDown.press;
+    self->down |= stick->keyDown.press;
+
+    self->start = controller->keyStart.press;
+    self->start |= controller->keyA.press;
+    self->start |= Unknown_pausePress;
 }
 
 void PauseMenu_LateUpdate(void) {
@@ -48,7 +61,6 @@ void PauseMenu_Draw(void) {
 void PauseMenu_Create(void *data) {
     RSDK_THIS(PauseMenu);
 
-    self->controller = &ControllerInfo[CONT_P1];
     RSDK.SetSpriteAnimation(ModPauseMenu->aniFrames, 0, &self->animator, true, 0);
 
     uint16 targetListID = 0;
@@ -63,6 +75,7 @@ void PauseMenu_Create(void *data) {
     RSDK.SetSpriteAnimation(ModPauseMenu->aniFrames, targetListID, &self->selectionAnimator, true, 0);
 
     self->backgroundAlpha = 74;
+    self->physicalInput   = cfg.useTouch;
 
     if (!SceneInfo->inEditor) {
         self->active = ACTIVE_ALWAYS;
@@ -160,16 +173,16 @@ void PauseMenu_State_StartPause(void) {
     RSDK.SetEngineState(ENGINESTATE_FROZEN);
     RSDK.PlaySfx(ModPauseMenu->sfxWoosh, false, 255);
 
-    self->position.x  = ScreenInfo->size.x;
+    self->position.x = ScreenInfo->size.x;
     self->spritePosX = ScreenInfo->size.x + 6;
-    self->timer       = 0;
-    self->alpha       = 0;
+    self->timer      = 0;
+    self->alpha      = 0;
 
     // Add language switch for this(?)
     self->timerThreshold = 12;
 
     bool32 blockedCategories = SceneInfo->activeCategory == StageCategoryCompetition || SceneInfo->activeCategory == StageCategorySpecial
-                          || SceneInfo->activeCategory == StageCategoryBonus;
+                               || SceneInfo->activeCategory == StageCategoryBonus;
     if (player->lives <= 1 || blockedCategories)
         self->disableRestart = true;
     else
@@ -193,8 +206,8 @@ void PauseMenu_State_SlideIn(void) {
         self->timer++;
     } else {
         self->spritePosX = self->position.x + 48;
-        self->timer       = 0;
-        self->state       = PauseMenu_State_SpritesFadeIn;
+        self->timer      = 0;
+        self->state      = PauseMenu_State_SpritesFadeIn;
     }
 }
 
@@ -219,11 +232,11 @@ void PauseMenu_State_SpritesFadeIn(void) {
 void PauseMenu_State_Controls(void) {
     RSDK_THIS(PauseMenu);
 
-    if (!cfg.useTouch) {
-        if (self->controller->keyUp.press) {
+    if (!self->physicalInput) {
+        if (self->up) {
             RSDK.PlaySfx(ModPauseMenu->sfxBleep, false, 255);
 
-            self->timer       = 0;
+            self->timer      = 0;
             self->spritePosX = ScreenInfo->size.x;
             self->selectedButton--;
 
@@ -234,10 +247,10 @@ void PauseMenu_State_Controls(void) {
                 self->selectedButton--;
         }
 
-        if (self->controller->keyDown.press) {
+        if (self->down) {
             RSDK.PlaySfx(ModPauseMenu->sfxBleep, false, 255);
 
-            self->timer       = 0;
+            self->timer      = 0;
             self->spritePosX = ScreenInfo->size.x;
             self->selectedButton++;
 
@@ -248,7 +261,7 @@ void PauseMenu_State_Controls(void) {
                 self->selectedButton++;
         }
 
-        if (self->controller->keyStart.press || self->controller->keyA.press) {
+        if (self->start) {
             RSDK.PlaySfx(ModPauseMenu->sfxAccept, false, 255);
             self->state     = PauseMenu_State_Confirmed;
             self->stateDraw = PauseMenu_Draw_Confirmed;
@@ -256,17 +269,15 @@ void PauseMenu_State_Controls(void) {
             self->timer     = 0;
         }
 
-        if (TouchHelpers_CheckTouchRect(0, 0, ScreenInfo->size.x, ScreenInfo->size.y, NULL, NULL) > -1 && cfg.useTouch) {
-            // options->physicalControls = false;
+        if (TouchHelpers_CheckAnyTouch() >= 0) {
+            self->physicalInput  = false;
             self->selectedButton = -1;
         }
     } else {
-        int32 someRectCheck = TouchHelpers_CheckTouchRect(0, 0, ScreenInfo->size.x, ScreenInfo->size.y, NULL, NULL);
-
-        if (TouchHelpers_CheckTouchRect(self->spritePosX, 32, ScreenInfo->size.x, 64, NULL, NULL) > -1) {
+        if (TouchHelpers_CheckTouchRect(self->spritePosX, 32, ScreenInfo->size.x, 64, NULL, NULL) >= 0) {
             self->selectedButton = 0;
         } else {
-            if (someRectCheck < 0) {
+            if (TouchHelpers_CheckAnyTouch() < 0) {
                 if (self->selectedButton == 0) {
                     RSDK.PlaySfx(ModPauseMenu->sfxAccept, false, 255);
                     self->state     = PauseMenu_State_Confirmed;
@@ -282,10 +293,10 @@ void PauseMenu_State_Controls(void) {
 
         // Restart
         if (!self->disableRestart) {
-            if (TouchHelpers_CheckTouchRect(self->spritePosX, 80, ScreenInfo->size.x, 112, NULL, NULL) > -1) {
+            if (TouchHelpers_CheckTouchRect(self->spritePosX, 80, ScreenInfo->size.x, 112, NULL, NULL) >= 0) {
                 self->selectedButton = 1;
             } else {
-                if (someRectCheck < 0) {
+                if (TouchHelpers_CheckAnyTouch() < 0) {
                     if (self->selectedButton == 1) {
                         RSDK.PlaySfx(ModPauseMenu->sfxAccept, false, 255);
                         self->state     = PauseMenu_State_Confirmed;
@@ -300,10 +311,11 @@ void PauseMenu_State_Controls(void) {
             }
         }
 
-        if (TouchHelpers_CheckTouchRect(self->spritePosX, 128, ScreenInfo->size.x, 160, NULL, NULL) > -1) {
+        // Options
+        if (TouchHelpers_CheckTouchRect(self->spritePosX, 128, ScreenInfo->size.x, 160, NULL, NULL) >= 0) {
             self->selectedButton = 2;
         } else {
-            if (someRectCheck < 0) {
+            if (TouchHelpers_CheckAnyTouch() < 0) {
                 if (self->selectedButton == 2) {
                     RSDK.PlaySfx(ModPauseMenu->sfxAccept, false, 255);
                     self->state     = PauseMenu_State_Confirmed;
@@ -317,11 +329,11 @@ void PauseMenu_State_Controls(void) {
             }
         }
 
-        // Options
-        if (TouchHelpers_CheckTouchRect(self->spritePosX, 176, ScreenInfo->size.x, 208, NULL, NULL) > -1) {
+        // Exit
+        if (TouchHelpers_CheckTouchRect(self->spritePosX, 176, ScreenInfo->size.x, 208, NULL, NULL) >= 0) {
             self->selectedButton = 3;
         } else {
-            if (someRectCheck < 0) {
+            if (TouchHelpers_CheckAnyTouch() < 0) {
                 if (self->selectedButton == 3) {
                     RSDK.PlaySfx(ModPauseMenu->sfxAccept, false, 255);
                     self->state     = PauseMenu_State_Confirmed;
@@ -335,20 +347,14 @@ void PauseMenu_State_Controls(void) {
             }
         }
 
-        if (self->controller->keyUp.press) {
+        if (self->up) {
             self->selectedButton = 3;
-
-            /* Mobile
-                options->physicalControls = true;
-            */
+            self->physicalInput  = true;
         }
 
-        if (self->controller->keyDown.press) {
+        if (self->down) {
             self->selectedButton = 0;
-
-            /* Mobile
-                options->physicalControls = true
-            */
+            self->physicalInput  = true;
         }
 
         if (self->timer < 60)
@@ -369,8 +375,8 @@ void PauseMenu_State_Confirmed(void) {
     } else {
 
         // Check for Resume (and options for now)
-        if (self->selectedButton == 0 || self->selectedButton == 2) {
-            self->spritePosX   = self->position.x + 48;
+        if (self->selectedButton == -1 || self->selectedButton == 0 || self->selectedButton == 2) {
+            self->spritePosX    = self->position.x + 48;
             self->pauseBarPos.y = 202;
 
             self->timer     = 0;
@@ -394,8 +400,8 @@ void PauseMenu_State_Confirmed(void) {
             // Music::Stop();
 
             self->spritePosX = self->position.x + 48;
-            self->state       = PauseMenu_State_ExitLevel;
-            self->stateDraw   = PauseMenu_Draw_ExitLevel;
+            self->state      = PauseMenu_State_ExitLevel;
+            self->stateDraw  = PauseMenu_Draw_ExitLevel;
         }
     }
 }

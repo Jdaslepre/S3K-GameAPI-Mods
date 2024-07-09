@@ -27,7 +27,6 @@ typedef struct {
     int32 timer;
     Animator animator;
     Animator selectionAnimator;
-    RSDKControllerState *controller;
     int32 backgroundAlpha;
     Vector2 drawPos;
     Vector2 pauseBarPos;
@@ -37,6 +36,12 @@ typedef struct {
     uint8 triggerPlayer;
     int32 timerThreshold;
     int32 pauseBarHeight;
+    int32 physicalInput;
+
+    //
+    int32 up;
+    int32 down;
+    int32 start;
 } EntityPauseMenu;
 
 extern ObjectPauseMenu *PauseMenu;

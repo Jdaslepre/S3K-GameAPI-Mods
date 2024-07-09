@@ -27,6 +27,11 @@ void HUD_StaticUpdate(void);
 void HUD_Draw(void);
 void HUD_Create(void *data);
 void HUD_StageLoad(void);
+
+// Extra Entity Functions
 void HUD_Init(void);
+EXTERNDEF(int32 (*HUD_CharacterIndexFromID)(int32 characterID));
+EXTERNDEF(void (*HUD_DrawNumbersBase10)(Animator *animator, Vector2 *drawPos, int32 value, int32 digitCount));
+EXTERNDEF(void (*HUD_DrawNumbersBase16)(EntityHUD *entity, Vector2 *drawPos, int32 value));
 
 #endif //! OBJ_HUD_H

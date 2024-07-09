@@ -356,88 +356,8 @@ typedef enum {
 // GLOBAL VARIABLES
 // =========================
 
-#ifndef GAME_NO_GLOBALS
-
-#if GAME_IS_MANIA
 typedef struct {
-    int32 gameMode;
-    int32 playerID; // active character IDs (usually leader & sidekick)
-    int32 specialCleared;
-    int32 specialRingID;
-    int32 blueSpheresID;
-    int32 blueSpheresInit;
-    int32 atlEnabled;
-    int32 atlEntityCount;
-    int32 atlEntitySlot[0x20];
-    int32 atlEntityData[0x4000];
-    int32 saveLoaded;
-    int32 saveRAM[0x4000];
-    int32 saveSlotID;
-    int32 noSaveSlot[0x400];
-    int32 menuParam[0x4000];
-    int32 itemMode;
-    int32 suppressTitlecard;
-    int32 suppressAutoMusic;
-    int32 competitionSession[0x4000];
-    int32 medalMods;
-    int32 parallaxOffset[0x100];
-    int32 enableIntro;
-    int32 optionsLoaded;
-    int32 optionsRAM[0x80];
-    int32 presenceID;
-    int32 medallionDebug;
-    int32 noSave;
-    int32 notifiedAutosave;
-    int32 recallEntities;
-    int32 restartRings;
-    int32 restart1UP;
-    int32 restartPowerups;
-    int32 restartPos[8];
-    int32 restartSlot[4];
-    int32 restartDir[4];
-    int32 restartMinutes;
-    int32 restartSeconds;
-    int32 restartMilliseconds;
-    int32 tempMinutes;
-    int32 tempSeconds;
-    int32 tempMilliseconds;
-    int32 restartScore;
-    int32 restartScore1UP;
-    int32 restartLives[4];
-    int32 restartMusicID;
-    int32 restartFlags;
-    int32 tempFlags;
-    int32 continues;
-    int32 initCoolBonus;
-    int32 coolBonus[4];
-#if MANIA_USE_PLUS
-    int32 replayWriteBuffer[0x40000];
-    int32 replayReadBuffer[0x40000];
-    int32 replayTempWBuffer[0x40000];
-    int32 replayTempRBuffer[0x40000];
-    int32 replayTableID;
-    int32 replayTableLoaded;
-    int32 taTableID;
-    int32 taTableLoaded;
-    int32 stock;          // order of buddies (not including the leader/sidekick)
-    int32 characterFlags; // characters in the "party"
-    int32 vapeMode;
-    int32 secrets;
-    int32 superSecret;
-    int32 superMusicEnabled;
-    int32 lastHasPlus;
-    int32 hasPlusInitial;
-#endif
-} ManiaGlobalVariables;
-
-typedef ManiaGlobalVariables GlobalVariables;
-
-extern GlobalVariables *globals;
-#endif
-
-#if GAME_IS_S3
-typedef struct {
-    int32 gameMode;
+    uint8 gameMode;
     int32 playerID;
     int32 specialCleared;
     int32 specialRingID;
@@ -445,13 +365,8 @@ typedef struct {
     int32 blueSpheresInit;
     int32 atlEnabled;
     int32 atlEntityCount;
-#if GAME_VERSION == VER_104
     int32 atlEntitySlot[0x120];
-    void *atlEntityData[0x120 * 0x114];
-#else
-    int32 atlEntitySlot[0x20];
-    int32 atlEntityData[0x20 * 0x400];
-#endif
+    void *atlEntityData[0x120][0x114];
     int32 saveLoaded;
     int32 saveRAM[0x1C00];
     int32 saveSlotID;
@@ -474,9 +389,9 @@ typedef struct {
     int32 restartRings;
     int32 restart1UP;
     int32 restartPowerups;
-    Vector2 restartPos[PLAYER_COUNT];
-    int32 restartSlot[PLAYER_COUNT];
-    int32 restartDir[PLAYER_COUNT];
+    Vector2 restartPos[4];
+    int32 restartSlot[4];
+    int32 restartDir[4];
     int32 restartMinutes;
     int32 restartSeconds;
     int32 restartMilliseconds;
@@ -485,7 +400,7 @@ typedef struct {
     int32 restartLives[4];
     int32 restartMusicID;
     bool32 restartFlags;
-    int32 field_47B4C;
+    int32 unkn_C334C;
     int32 showExtendedTimeHUD;
     int32 overrideRestart;
     int32 overrideUnknown;
@@ -503,19 +418,19 @@ typedef struct {
     int32 continues;
     bool32 initCoolBonus;
     int32 coolBonus[PLAYER_COUNT];
-    int32 replayWriteBuffer[0x40000];
-    int32 replayReadBuffer[0x40000];
-    int32 replayTempWBuffer[0x40000];
-    int32 replayTempRBuffer[0x40000];
-    int32 replayTable;
+    int32 replayWriteBuffer[262144];
+    int32 replayReadBuffer[262144];
+    int32 replayTempWBuffer[262144];
+    int32 replayTempRBuffer[262144];
+    int32 replayTableID;
     int32 replayTableLoaded;
-    int32 taTable;
+    int32 taTableID;
     int32 taTableLoaded;
     int32 stock;
     int32 characterFlags;
     bool32 vapeMode;
     int32 secrets;
-    int32 field_447BF4;
+    int32 unk_4C33F4;
     bool32 soundTestEnabled;
     bool32 superMusicEnabled;
     int32 playerSpriteStyle;
@@ -538,7 +453,7 @@ typedef struct {
     uint8 gravityDir;
     uint8 blueSpheresSeed[4];
     bool32 blueSpheresHasPerfect;
-    int32 field_447CB8;
+    int32 field_447CB8; // blueSpheresLevel?
     int32 field_447CBC;
     int32 field_447CC0;
     int32 field_447CC4;
@@ -546,22 +461,14 @@ typedef struct {
     uint8 field_447CCC;
     int32 field_447CD0;
     bool32 disableLives;
-    bool32 mirrorMode;
-    bool32 useManiaBehavior;
+    int32 mirrorMode;
+    int32 useManiaBehavior;
     int32 coinCount;
     bool32 showHUD;
-    bool32 showLives;
-    bool32 disableSSAdvancement;
-    int32 anyPress;
-    bool32 isBossAttack;
-    uint8 bossAttackCategory;
-    int32 bossAttackRestartRings;
-    uint8 bossAttackRestartMilliseconds;
-    uint8 bossAttackRestartSeconds;
-    uint8 bossAttackRestartMinutes;
-    uint8 bossAttackRestartPowerup;
-    bool32 hasBossAttackRestartState;
-    int32 playMode;
+    bool32 somethingRelatedToLives;
+    uint8 gap4C34DC[34];
+    bool32 hasPlusDLC;
+    bool32 playMode;
     int32 callbackParam0;
     int32 callbackParam1;
     int32 callbackParam2;
@@ -575,39 +482,29 @@ typedef struct {
     int32 missionEnd;
     int32 continueFlag;
     bool32 skipSaveSelect;
-    int32 field_447D40;
-    int32 field_447D44;
-    int32 field_447D48;
+    int32 unkn_447D40;
+    bool32 bossOneLife;
+    int32 unkn_447D48;
     int32 callbackResult;
     bool32 skipTitleIntro;
     bool32 allowRetries;
     bool32 clearBlueSpheres;
-    int32 field_447D5C;
-    int32 field_447D60;
-    int32 field_447D64;
-    int32 field_447D68;
-    int32 field_447D6C;
+    int32 unkn_4C3564;
+    int32 unkn_4C3568;
+    int32 unkn_4C356C;
+    int32 unkn_4C3570;
+    int32 unkn_4C3574;
     int32 statsParam7;
     int32 statsParam8;
     int32 statsParam2;
-    int32 field_447D7C;
-    int32 field_447D80;
-    bool32 enableSSWaitRetry;
-    int32 field_447D88;
-    int32 field_447D8C;
-    int32 field_447D90;
-    int32 field_447D94;
-#if GAME_VERSION == VER_104
-    bool32 cheatsEnabled;
-    int32 field_447D9C;
-#endif
+    int32 unkn_4C3584;
+    int32 unkn_4C3588;
+    bool32 waitSSRetry;
 } S3GlobalVariables;
 
 typedef S3GlobalVariables GlobalVariables;
 
 extern GlobalVariables *globals;
-#endif
-#endif
 
 // =========================
 // GAME HELPERS

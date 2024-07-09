@@ -5,6 +5,10 @@ ObjectHUD *HUD;
 void HUD_Init(void) {
     MOD_REGISTER_OBJECT_HOOK(HUD);
 
+    HUD_CharacterIndexFromID = Mod.GetPublicFunction(NULL, "HUD::CharacterIndexFromID");
+    HUD_DrawNumbersBase10    = Mod.GetPublicFunction(NULL, "HUD::DrawNumbersBase10");
+    HUD_DrawNumbersBase16    = Mod.GetPublicFunction(NULL, "HUD::DrawNumbersBase16");
+
     if (!cfg.useTouch)
         return;
 

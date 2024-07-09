@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="GameAPI">
+      <UniqueIdentifier>{2b00ea04-a1d3-4639-b021-f84d63a0646a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{5c9fbd08-4c97-4454-8067-4672fb0968a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Title">
+      <UniqueIdentifier>{4f1cf66b-dc42-4134-96b3-9d9efcc4562b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Global">
+      <UniqueIdentifier>{a41f3f0f-9698-4c0e-a0a7-e5657c9a03f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Menu">
+      <UniqueIdentifier>{ad22b590-a5f7-4359-909a-362b2080cd8c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameAPI\CPP\GameAPI\Game.cpp">
+      <Filter>GameAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Title\TitleElement.cpp">
+      <Filter>Source Files\Objects\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Global\VirtualDPad.cpp">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Global\HUD.cpp">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\GameAPI\CPP\GameAPI\Game.hpp">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\CPP\GameAPI\GameObjects.hpp">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\CPP\GameAPI\GameVariables.hpp">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="cfg.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Title\TitleElement.hpp">
+      <Filter>Source Files\Objects\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\VirtualDPad.hpp">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Global\HUD.hpp">
+      <Filter>Source Files\Objects\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="GameAPIExtensions.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

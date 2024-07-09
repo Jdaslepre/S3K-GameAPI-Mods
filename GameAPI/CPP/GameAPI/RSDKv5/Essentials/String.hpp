@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Types.hpp"
+#include "../Types.hpp"
+#include "../Graphics/Sprite.hpp"
 
 namespace RSDK
 {
-struct String
-{
+struct String {
 public:
     String() {}
     String(const char *str) { Init(str); }
@@ -47,6 +47,7 @@ public:
     String &Append(String *str);
     String &Append(const char *str);
 
+    inline void Copy(String *dst) { RSDKTable->CopyString(dst, this); }
     static inline void Copy(String *dst, String *src) { RSDKTable->CopyString(dst, src); }
     static inline void Copy(String *dst, const char *src) { RSDKTable->SetString(dst, src); }
     static bool32 Compare(String *strA, String *strB, bool32 exactMatch) { return RSDKTable->CompareStrings(strA, strB, exactMatch); }
@@ -58,7 +59,10 @@ public:
     inline bool32 Empty() { return !length; }
 
     inline void SetSpriteString(SpriteAnimation aniFrames, uint16 listID) { RSDKTable->SetSpriteString(aniFrames.aniFrames, listID, this); }
-    inline int32 GetWidth(SpriteAnimation aniFrames, uint16 listID, int32 spacing) { return RSDKTable->GetStringWidth(aniFrames.aniFrames, listID, this, 0, length, spacing); }
+    inline int32 GetWidth(SpriteAnimation aniFrames, uint16 listID, int32 spacing)
+    {
+        return RSDKTable->GetStringWidth(aniFrames.aniFrames, listID, this, 0, length, spacing);
+    }
     inline int32 GetWidth(SpriteAnimation aniFrames, uint16 listID, int32 start, int32 length, int32 spacing)
     {
         return RSDKTable->GetStringWidth(aniFrames.aniFrames, listID, this, start, length, spacing);
@@ -69,7 +73,7 @@ public:
 
     uint16 *chars = nullptr;
     uint16 length = 0;
-    uint16 size = 0;
+    uint16 size   = 0;
 };
 
 } // namespace RSDK

@@ -5,6 +5,9 @@ ObjectTitleElement *TitleElement;
 void TitleElement_Init(void) {
     MOD_REGISTER_OBJECT_HOOK(TitleElement);
 
+    if (!cfg.useTouch)
+        return;
+
     MOD_REGISTER_OBJ_OVERLOAD(TitleElement, NULL, NULL, NULL, NULL, TitleElement_Create, NULL, NULL, NULL, NULL);
 }
 

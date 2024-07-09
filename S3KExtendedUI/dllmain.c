@@ -22,13 +22,16 @@ void InitModAPI(void) {
     // Object Setup
     // ------------
 
+    MOD_REGISTER_OBJECT_HOOK(Camera);
     MOD_REGISTER_OBJECT_HOOK(TitleCard);
-    
+    MOD_REGISTER_OBJECT_HOOK(DebugMode);
+
     // BS_Slot
     S1SS_Player_Init();
     SlotHUD_Init();
 
     // Global
+    DebugMode_Init();
     HUD_Init();
     PauseMenu_Init();
     Player_Init();

@@ -8,6 +8,8 @@ typedef struct {
 
 } ObjectPlayer;
 
+StateMachine();
+
 typedef struct {
     RSDK_ENTITY
     uint8 pathTracer[112];
@@ -22,7 +24,7 @@ typedef struct {
     ext_StateMachine nextAirState;
     ext_StateMachine nextGroundState;
     ext_StateMachine stateGravity;
-    void *camera;
+    EntityCamera *camera;
     Animator animator;
     Animator tailAnimator;
     int32 minJogVelocity;

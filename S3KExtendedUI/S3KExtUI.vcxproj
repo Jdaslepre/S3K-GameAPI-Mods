@@ -178,6 +178,7 @@
     <ClCompile Include="ext.c" />
     <ClCompile Include="Objects\BS_Slot\S1SS_Player.c" />
     <ClCompile Include="Objects\BS_Slot\SlotHUD.c" />
+    <ClCompile Include="Objects\Global\DebugMode.c" />
     <ClCompile Include="Objects\Global\HUD.c" />
     <ClCompile Include="Objects\Global\PauseMenu.c" />
     <ClCompile Include="Objects\Global\Player.c" />
@@ -201,6 +202,7 @@
     <ClInclude Include="cfg.h" />
     <ClInclude Include="Objects\BS_Slot\S1SS_Player.h" />
     <ClInclude Include="Objects\BS_Slot\SlotHUD.h" />
+    <ClInclude Include="Objects\Global\DebugMode.h" />
     <ClInclude Include="Objects\Global\HUD.h" />
     <ClInclude Include="Objects\Global\PauseMenu.h" />
     <ClInclude Include="Objects\Global\Player.h" />

@@ -24,3 +24,5 @@ int32 TouchHelpers_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2, int32 
 
     return -1;
 }
+
+int32 TouchHelpers_CheckAnyTouch(void) { return TouchHelpers_CheckTouchRect(NULL, NULL, ScreenInfo->size.x, ScreenInfo->size.y, NULL, NULL); }

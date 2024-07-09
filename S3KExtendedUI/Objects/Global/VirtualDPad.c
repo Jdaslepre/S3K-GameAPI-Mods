@@ -9,6 +9,9 @@ str_VirtualDPad VirtualDPad;
 // ----------------------
 
 void VirtualDPad_Draw(void) {
+    if (!VirtualDPad.parent)
+        return;
+
     if (SceneInfo->activeCategory == StageCategorySpecial)
         RSDK.SetActivePalette(3, 0, 255);
 

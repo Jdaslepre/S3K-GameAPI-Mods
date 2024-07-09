@@ -127,6 +127,14 @@ void LinkGameLogicDLL(RSDK::EngineInfo info)
         }
     }
 #endif
+
+#if GAME_CUSTOMLINKLOGIC
+#if RETRO_REV02
+    LinkGameLogic(info);
+#else
+    LinkGameLogic(&info);
+#endif
+#endif
 }
 
 #if RETRO_USE_MOD_LOADER

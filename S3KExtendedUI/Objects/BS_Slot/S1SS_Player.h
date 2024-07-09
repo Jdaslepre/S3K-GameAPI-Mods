@@ -20,7 +20,7 @@ typedef struct {
     uint16 playerID;
     uint8 gap7C[4];
     ext_StateMachine state;
-    void *camera;
+    EntityCamera *camera;
     Animator animator;
     Animator tailAnimator;
     int32 tailRotation;

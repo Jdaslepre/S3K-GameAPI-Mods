@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../Types.hpp"
+#include "../EngineAPI.hpp"
+
 namespace RSDK
 {
 struct ScanlineInfo {
@@ -11,7 +14,7 @@ struct ScrollInfo {
     int32 tilePos;
     int32 parallaxFactor;
     int32 scrollSpeed;
-    int32 scrollPos;
+    /*int32*/ FixedPoint scrollPos; 
     uint8 deform;
     uint8 unknown;
 };
@@ -66,7 +69,7 @@ struct TileLayer {
     Vector2 position;
     int32 parallaxFactor;
     int32 scrollSpeed;
-    int32 scrollPos;
+    FixedPoint scrollPos;
     int32 deformationOffset;
     int32 deformationOffsetW;
     int32 deformationData[0x400];
@@ -100,14 +103,13 @@ struct SceneLayer {
             return this->id == (uint16)-1;
     }
 
-   
     inline TileLayer *GetTileLayer() { return RSDKTable->GetTileLayer(id); }
     inline void Size(Vector2 *size, bool32 usePixelUnits) { RSDKTable->GetLayerSize(id, size, usePixelUnits); }
 
     inline Tile GetTile(int32 x, int32 y) { return Tile(RSDKTable->GetTile(id, x, y)); }
     inline void SetTile(int32 x, int32 y, Tile tile) { RSDKTable->SetTile(id, x, y, tile.id); }
 
-    static inline TileLayer *GetTileLayer(const char* name) { return RSDKTable->GetTileLayer(RSDKTable->GetTileLayerID(name)); }
+    static inline TileLayer *GetTileLayer(const char *name) { return RSDKTable->GetTileLayer(RSDKTable->GetTileLayerID(name)); }
     static inline TileLayer *GetTileLayer(int32 id) { return RSDKTable->GetTileLayer(id); }
 
     static inline void Copy(SceneLayer dstLayer, int32 dstStartX, int32 dstStartY, SceneLayer srcLayer, int32 srcStartX, int32 srcStartY,

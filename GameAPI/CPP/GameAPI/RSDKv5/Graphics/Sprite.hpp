@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Types.hpp"
+#include "../Types.hpp"
+#include "../EngineAPI.hpp"
+#include "../Game/Collision.hpp"
+
+#define FRAMEHITBOX_COUNT (0x8)
 
 namespace RSDK
 {
@@ -24,7 +28,7 @@ struct SpriteSheet {
     }
 };
 
-struct SpriteFrame {
+typedef struct {
     int16 sprX;
     int16 sprY;
     int16 width;
@@ -34,6 +38,14 @@ struct SpriteFrame {
     uint16 duration;
     uint16 unicodeChar;
     uint8 sheetID;
+} GameSpriteFrame;
+
+struct SpriteFrame {
+    GameSpriteFrame frame;
+#if !RETRO_REV0U
+    uint8 hitboxCount;
+#endif
+    Hitbox hitboxes[FRAMEHITBOX_COUNT];
 };
 
 struct SpriteAnimation {
@@ -52,14 +64,15 @@ struct SpriteAnimation {
         RSDKTable->EditSpriteAnimation(aniFrames, listID, name, frameOffset, frameCount, speed, loopIndex, rotationStyle);
     }
 
-    inline uint16 FindAnimation(const char *name) { return RSDKTable->FindSpriteAnimation(aniFrames, name); }
+    inline uint16 GetResourceID(const char *name) { return RSDKTable->FindSpriteAnimation(aniFrames, name); }
 
     inline bool32 Loaded() { return aniFrames != (uint16)-1; }
 
     inline SpriteFrame *GetFrame(int32 animID, int32 frameID) { return RSDKTable->GetFrame(aniFrames, animID, frameID); }
 
     inline bool32 Matches(SpriteAnimation &other) { return this->aniFrames == other.aniFrames; }
-    inline bool32 Matches(SpriteAnimation *other) { 
+    inline bool32 Matches(SpriteAnimation *other)
+    {
         if (other)
             return this->aniFrames == other->aniFrames;
         else

@@ -1,8 +1,16 @@
+#pragma once
+
 #include "Types.hpp"
 
-#include <cstdarg>
+#ifndef SCREEN_XMAX
+#define SCREEN_XMAX (1280)
+#endif
+
+#ifndef SCREEN_YSIZE
+#define SCREEN_YSIZE (240)
+#endif
+
 #include <stdio.h>
-#include <cmath>
 #include <cstring>
 
 namespace RSDK
@@ -96,6 +104,12 @@ enum GameLanguages {
     LANGUAGE_TC,
 };
 
+enum InputIDs {
+    INPUT_UNASSIGNED = -2,
+    INPUT_AUTOASSIGN = -1,
+    INPUT_NONE       = 0,
+};
+
 #if RETRO_USE_MOD_LOADER
 // Mod Table
 struct ModFunctionTable {
@@ -104,13 +118,13 @@ struct ModFunctionTable {
     void (*RegisterGlobals)(const char *globalsPath, void **globals, uint32 size, void (*initCB)(void *globals));
     void (*RegisterObject)(void **staticVars, void **modStaticVars, const char *name, uint32 entityClassSize, uint32 staticClassSize,
                            uint32 modClassSize, void (*update)(void), void (*lateUpdate)(void), void (*staticUpdate)(void), void (*draw)(void),
-                           void (*create)(void *), void (*stageLoad)(void), void (*editorDraw)(void), void (*editorLoad)(void),
+                           void (*create)(void *), void (*stageLoad)(void), void (*editorLoad)(void), void (*editorDraw)(void),
                            void (*serialize)(void), void (*staticLoad)(void *staticVars), const char *inherited);
 #else
     void (*RegisterGlobals)(const char *globalsPath, void **globals, uint32 size);
     void (*RegisterObject)(void **staticVars, void **modStaticVars, const char *name, uint32 entityClassSize, uint32 staticClassSize,
                            uint32 modClassSize, void (*update)(void), void (*lateUpdate)(void), void (*staticUpdate)(void), void (*draw)(void),
-                           void (*create)(void *), void (*stageLoad)(void), void (*editorDraw)(void), void (*editorLoad)(void),
+                           void (*create)(void *), void (*stageLoad)(void), void (*editorLoad)(void), void (*editorDraw)(void),
                            void (*serialize)(void), const char *inherited);
 #endif
     void *RegisterObject_STD;
@@ -328,12 +342,12 @@ struct RSDKFunctionTable {
     void (*RegisterGlobalVariables)(void **globals, int32 size, void (*initCB)(void *globals));
     void (*RegisterObject)(void **staticVars, const char *name, uint32 entityClassSize, uint32 staticClassSize, void (*update)(void),
                            void (*lateUpdate)(void), void (*staticUpdate)(void), void (*draw)(void), void (*create)(void *), void (*stageLoad)(void),
-                           void (*editorDraw)(void), void (*editorLoad)(void), void (*serialize)(void), void (*staticLoad)(void *staticVars));
+                           void (*editorLoad)(void), void (*editorDraw)(void), void (*serialize)(void), void (*staticLoad)(void *staticVars));
 #else
     void (*RegisterGlobalVariables)(void **globals, int32 size);
     void (*RegisterObject)(void **staticVars, const char *name, uint32 entityClassSize, uint32 staticClassSize, void (*update)(void),
                            void (*lateUpdate)(void), void (*staticUpdate)(void), void (*draw)(void), void (*create)(void *), void (*stageLoad)(void),
-                           void (*editorDraw)(void), void (*editorLoad)(void), void (*serialize)(void));
+                           void (*editorLoad)(void), void (*editorDraw)(void), void (*serialize)(void));
 #endif
 #if RETRO_REV02
     void (*RegisterStaticVariables)(void **varClass, const char *name, uint32 classSize);
@@ -438,7 +452,7 @@ struct RSDKFunctionTable {
 #endif
 
     // Spritesheets
-    uint16 (*LoadSpriteSheet)(const char *filePath, int32 scope);
+    uint16 (*LoadSpriteSheet)(const char *filePath, uint8 scope);
 
     // Palettes & Colors
 #if RETRO_REV02
@@ -450,7 +464,7 @@ struct RSDKFunctionTable {
     void (*SetPaletteEntry)(uint8 bankID, uint8 index, uint32 color);
     color (*GetPaletteEntry)(uint8 bankID, uint8 index);
     void (*SetActivePalette)(uint8 newActiveBank, int32 startLine, int32 endLine);
-    void (*CopyPalette)(uint8 sourceBank, uint8 srcBankStart, uint8 destinationBank, uint8 destBankStart, uint16 count);
+    void (*CopyPalette)(uint8 sourceBank, uint8 srcBankStart, uint8 destinationBank, uint8 destBankStart, uint8 count);
 #if RETRO_REV02
     void (*LoadPalette)(uint8 bankID, const char *path, uint16 disabledRows);
 #endif
@@ -470,7 +484,7 @@ struct RSDKFunctionTable {
     void (*DrawBlendedFace)(Vector2 *vertices, color *vertColors, int32 vertCount, int32 alpha, int32 inkEffect);
     void (*DrawSprite)(Animator *animator, Vector2 *position, bool32 screenRelative);
     void (*DrawDeformedSprite)(uint16 sheetID, int32 inkEffect, bool32 screenRelative);
-    void (*DrawText)(Animator *animator, Vector2 *position, String *string, int32 startFrame, int32 endFrame, int32 align, int32 spacing,
+    void (*DrawText)(Animator *animator, Vector2 *position, String *string, int32 endFrame, int32 textLength, int32 align, int32 spacing,
                      void *unused, Vector2 *charOffsets, bool32 screenRelative);
     void (*DrawTile)(uint16 *tiles, int32 countX, int32 countY, Vector2 *position, Vector2 *offset, bool32 screenRelative);
     void (*CopyTile)(uint16 dest, uint16 src, uint16 count);
@@ -487,16 +501,20 @@ struct RSDKFunctionTable {
     void (*SetDiffuseColor)(uint16 sceneIndex, uint8 x, uint8 y, uint8 z);
     void (*SetDiffuseIntensity)(uint16 sceneIndex, uint8 x, uint8 y, uint8 z);
     void (*SetSpecularIntensity)(uint16 sceneIndex, uint8 x, uint8 y, uint8 z);
-    void (*AddModelTo3DScene)(uint16 modelFrames, uint16 sceneIndex, uint8 drawMode, Matrix *matWorld, Matrix *matNormal, color color);
+    void (*AddModelTo3DScene)(uint16 modelFrames, uint16 sceneIndex, uint8 drawMode, Matrix *matWorld, Matrix *matView, color color);
     void (*SetModelAnimation)(uint16 modelFrames, Animator *animator, int16 speed, uint8 loopIndex, bool32 forceApply, int16 frameID);
-    void (*AddMeshFrameTo3DScene)(uint16 modelFrames, uint16 sceneIndex, Animator *animator, uint8 drawMode, Matrix *matWorld, Matrix *matNormal,
+    void (*AddMeshFrameTo3DScene)(uint16 modelFrames, uint16 sceneIndex, Animator *animator, uint8 drawMode, Matrix *matWorld, Matrix *matView,
                                   color color);
     void (*Draw3DScene)(uint16 sceneIndex);
 
     // Sprite Animations & Frames
-    uint16 (*LoadSpriteAnimation)(const char *filePath, int32 scope);
-    uint16 (*CreateSpriteAnimation)(const char *filePath, uint32 frameCount, uint32 listCount, int32 scope);
+    uint16 (*LoadSpriteAnimation)(const char *filePath, uint8 scope);
+    uint16 (*CreateSpriteAnimation)(const char *filePath, uint32 frameCount, uint32 listCount, uint8 scope);
+#if RETRO_MOD_LOADER_VER >= 2
+    void (*SetSpriteAnimation)(uint16 aniFrames, uint16 listID, Animator *animator, bool32 forceApply, int32 frameID);
+#else
     void (*SetSpriteAnimation)(uint16 aniFrames, uint16 listID, Animator *animator, bool32 forceApply, int16 frameID);
+#endif
     void (*EditSpriteAnimation)(uint16 aniFrames, uint16 listID, const char *name, int32 frameOffset, uint16 frameCount, int16 speed, uint8 loopIndex,
                                 uint8 rotationStyle);
     void (*SetSpriteString)(uint16 aniFrames, uint16 listID, String *string);
@@ -529,7 +547,7 @@ struct RSDKFunctionTable {
                              int32 tolerance);
     void (*ProcessObjectMovement)(void *entity, Hitbox *outer, Hitbox *inner);
 #if RETRO_REV0U
-    void (*SetupCollisionConfig)(int32 minDistance, uint8 lowTolerance, uint8 highTolerance, uint8 floorAngleTolerance, uint8 wallAngleTolerance,
+    void (*SetupCollisionConfig)(int8 minDistance, uint8 lowTolerance, uint8 highTolerance, uint8 floorAngleTolerance, uint8 wallAngleTolerance,
                                  uint8 roofAngleTolerance);
     void (*SetPathGripSensors)(CollisionSensor *sensors); // expects 5 sensors
     void (*FindFloorPosition)(CollisionSensor *sensor);
@@ -554,9 +572,6 @@ struct RSDKFunctionTable {
     uint16 (*GetSfx)(const char *path);
     int32 (*PlaySfx)(uint16 sfx, int32 loopPoint, int32 priority);
     void (*StopSfx)(uint16 sfx);
-#if RETRO_REV0U
-    void (*StopAllSfx)(void);
-#endif
     int32 (*PlayStream)(const char *filename, uint32 channel, uint32 startPos, uint32 loopPoint, bool32 loadASync);
     void (*SetChannelAttributes)(uint8 channel, float volume, float pan, float speed);
     void (*StopChannel)(uint32 channel);
@@ -625,6 +640,7 @@ struct RSDKFunctionTable {
     // Origins Extras
     void (*NotifyCallback)(int32 callbackID, int32 param1, int32 param2, int32 param3);
     void (*SetGameFinished)(void);
+    void (*StopAllSfx)(void);
 #endif
 };
 
@@ -640,7 +656,6 @@ enum GamePlatforms {
     PLATFORM_PS4,
     PLATFORM_XB1,
     PLATFORM_SWITCH,
-
     PLATFORM_DEV = 0xFF,
 };
 
@@ -681,9 +696,12 @@ struct UnknownInfo {
 };
 
 struct GameInfo {
-    char engineInfo[0x40];
-    char gameSubname[0x100];
+    char gameTitle[0x40];
+    char gameSubtitle[0x100];
     char version[0x10];
+    uint8 platform;
+    uint8 language;
+    uint8 region;
 };
 
 struct InputState {
@@ -708,12 +726,12 @@ struct ControllerState {
 
     // Rev01 hasn't split these into different structs yet
 #if RETRO_REV01
-    InputState bumperL;
-    InputState bumperR;
+    InputState keyBumperL;
+    InputState keyBumperR;
     InputState keyTriggerL;
     InputState keyTriggerR;
-    InputState stickL;
-    InputState stickR;
+    InputState keyStickL;
+    InputState keyStickR;
 #endif
 };
 
@@ -763,8 +781,7 @@ struct TouchInfo {
 };
 
 struct ScreenInfo {
-    // uint16 *frameBuffer;
-    uint16 frameBuffer[1280 * 240];
+    uint16 frameBuffer[SCREEN_XMAX * SCREEN_YSIZE];
     Vector2 position;
     Vector2 size;
     Vector2 center;
@@ -831,8 +848,9 @@ inline void InitEngineInfo(EngineInfo *info)
 #if RETRO_REV02
     SKU = info->currentSKU;
 #endif
-    sceneInfo      = info->sceneInfo;
-    controllerInfo = info->controllerInfo;
+
+    sceneInfo = info->sceneInfo;
+    controllerInfo    = info->controllerInfo;
 
     analogStickInfoL = info->stickInfoL;
 #if RETRO_REV02
@@ -853,3 +871,9 @@ inline void InitEngineInfo(EngineInfo *info)
 }
 
 }; // namespace RSDK
+
+#if GAME_CUSTOMLINKLOGIC
+// DEFINE THIS YOURSELF!!!!
+// This runs after LinkGameLogicDLL registers objects
+void LinkGameLogic(RSDK::EngineInfo *info);
+#endif
