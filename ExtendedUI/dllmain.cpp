@@ -44,23 +44,25 @@ bool32 LinkModLogic(RSDK::EngineInfo *info, const char *modID) {
     GetPublicFuncAssign(HUD_DrawNumbersBase10, NULL, "HUD::DrawNumbersBase10");
     GetPublicFuncAssign(HUD_DrawNumbersBase16, NULL, "HUD::DrawNumbersBase16");
     GetPublicFuncAssign(HUD_CharacterIndexFromID, NULL, "HUD::CharacterIndexFromID");
+    GetPublicFuncAssign(LevelSelect_State_Navigate, NULL, "LevelSelect::State_Navigate");
     GetPublicFuncAssign(Player_Input_Gamepad, NULL, "Player::Input_Gamepad");
     GetPublicFuncAssign(S3K_SS_Player_Input_Gamepad, NULL, "S3K_SS_Player::Input_Gamepad");
 
-    usePathTracer = (bool32 *)Mod::GetPublicFunction(NULL, "usePathTracer");
+    config.usePathTracer = static_cast<bool*>(Mod::GetPublicFunction(0, "usePathTracer"));
 
     // --------------------
     // Set Public Functions
     // --------------------
 
-    // Set a variable that allows other mods to detect if touch controls are enabled
+    // Add a variable that allows other mods to detect if touch controls are enabled
     // this should be fine to do i think...
-    // Mod::AddPublicFunction("useTouchControls", &config.useTouch);
+    Mod::AddPublicFunction("useTouchControls", INT_TO_VOID(config.useTouchControls));
 
     // --------------------
     // Register State Hooks
     // --------------------
 
+    Mod::RegisterStateHook(LevelSelect_State_Navigate, LevelSelect_State_Navigate_Hook, true);
     Mod::RegisterStateHook(Player_Input_Gamepad, Player_Input_Gamepad_Hook, true);
     Mod::RegisterStateHook(S3K_SS_Player_Input_Gamepad, S3K_SS_Player_Input_Gamepad_Hook, true);
 

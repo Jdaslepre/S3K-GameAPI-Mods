@@ -237,8 +237,8 @@ void HUD::DrawMobile(void) {
                 this->lifeNamesAnimator.frameID = this->lifeNamesAnimator.frameCount - 1;
         }
 
-        // if (!usePathTracer)
-        // this->lifeIconAnimator.frameID = this->lifeIconAnimator.frameCount - 2;
+        if (!*config.usePathTracer)
+            this->lifeIconAnimator.frameID = this->lifeIconAnimator.frameCount - 2;
 
         if (this->lifeIconAnimator.frameID < 0) {
             this->lifeIconAnimator.frameID = this->lifeFrameIDs[player->playerID];

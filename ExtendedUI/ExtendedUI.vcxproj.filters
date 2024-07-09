@@ -34,6 +34,9 @@
     <ClCompile Include="Objects\S1SS_Player.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\LevelSelect.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameAPI\CPP\GameAPI\Game.hpp">
@@ -79,6 +82,9 @@
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Objects\S1SS_Player.hpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\LevelSelect.hpp">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>

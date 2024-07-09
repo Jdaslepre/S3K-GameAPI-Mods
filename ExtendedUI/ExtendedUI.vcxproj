@@ -178,6 +178,7 @@
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DebugMode.cpp" />
     <ClCompile Include="Objects\HUD.cpp" />
+    <ClCompile Include="Objects\LevelSelect.cpp" />
     <ClCompile Include="Objects\Player.cpp" />
     <ClCompile Include="Objects\S1SS_Player.cpp" />
     <ClCompile Include="Objects\S3K_SS_HUD.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Objects\Camera.hpp" />
     <ClInclude Include="Objects\DebugMode.hpp" />
     <ClInclude Include="Objects\HUD.hpp" />
+    <ClInclude Include="Objects\LevelSelect.hpp" />
     <ClInclude Include="Objects\Player.hpp" />
     <ClInclude Include="Objects\S1SS_Player.hpp" />
     <ClInclude Include="Objects\S3K_SS_HUD.hpp" />

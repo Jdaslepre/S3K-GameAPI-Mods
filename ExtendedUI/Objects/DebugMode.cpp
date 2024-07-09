@@ -111,6 +111,8 @@ void DebugMode::StageLoad(void) {
 
     // Debug mode buttons (Plus/Minus)
     modSVars->animator.SetAnimation(modSVars->aniFrames, 3, true, 0);
+
+    sVars->Super(SUPER_STAGELOAD);
 }
 
 } // namespace GameLogic
