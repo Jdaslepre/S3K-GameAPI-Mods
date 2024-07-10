@@ -47,14 +47,6 @@ void S1SS_Player::HandleTouchInputs(void) {
     if (this->controllerID < PLAYER_COUNT) {
         ControllerState *controller = &controllerInfo[this->controllerID];
 
-        /*
-        if (self->state != ERZStart_State_PlayerSuperFly && self->state != ERZStart_State_PlayerRebound
-            && !(self->state == Player_State_Static && self->animator.animationID == ANI_BUBBLE))
-            Touch::Control4Dir(controller);
-        else
-            Touch::Control8Dir(controller);
-            */
-
         Touch::Control4Dir(controller);
 
         int32 jumpX = screenInfo->center.x;

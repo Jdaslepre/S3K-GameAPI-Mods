@@ -44,10 +44,6 @@ struct HUD : GameObject::Entity {
         int32 jumpAlpha[PLAYER_COUNT];
         Vector2 superPos;
         int32 superAlpha[PLAYER_COUNT];
-        // #if MANIA_USE_PLUS
-        Vector2 swapPos;
-        int32 swapAlpha[PLAYER_COUNT];
-        // #endif
         Vector2 pausePos;
         int32 pauseAlpha[PLAYER_COUNT];
     };

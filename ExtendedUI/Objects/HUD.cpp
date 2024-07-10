@@ -334,9 +334,6 @@ void HUD::DrawTouchControls(void) {
     modSVars->superPos.x = modSVars->actionPos.x - TO_FIXED(64);
     modSVars->superPos.y = modSVars->actionPos.y;
 
-    modSVars->swapPos.x = modSVars->actionPos.x;
-    modSVars->swapPos.y = modSVars->actionPos.y - TO_FIXED(64);
-
     if (globals->gameMode == MODE_ENCORE)
         modSVars->pausePos.x = TO_FIXED(screenInfo[sceneInfo->currentScreenID].size.x - 100);
     else
@@ -352,108 +349,98 @@ void HUD::DrawTouchControls(void) {
     this->scale.y = (int32)(0x200 * config.vDPadSize);
 
     bool32 canMove = StateMatchesExt<Player>(&player->stateInput, Player_Input_Gamepad);
-    canMove &= !StateMatchesExt<Player>(&player->state, Player_State_Victory);
+    canMove &= ~StateMatchesExt<Player>(&player->state, Player_State_Victory);
 
     bool32 canJump = StateMatchesExt<Player>(&player->stateInput, Player_Input_Gamepad);
-    canMove &= !StateMatchesExt<Player>(&player->state, Player_State_Victory);
-
-    /*
-    bool32 canMove = player->stateInput == Player_Input_P1;
-    canMove |= player->stateInput == MegaChopper_Input_GrabbedP1;
-    canMove |= player->stateInput == Gachapandora_Player_StateInput_P1Grabbed;
-    canMove &= player->state != Player_State_Victory;
-
-    bool32 canJump = player->stateInput == Player_Input_P1;
-    canJump |= player->stateInput == MegaChopper_Input_GrabbedP1;
-    canJump |= player->stateInput == Gachapandora_Player_StateInput_P1Grabbed;
-    canJump &= player->state != Player_State_Victory;
-    */
+    canMove &= ~StateMatchesExt<Player>(&player->state, Player_State_Victory);
 
     bool32 canSuper = canJump && player->CanTransform();
     bool32 canSwap  = canJump && globals->gameMode == MODE_ENCORE && !sVars->swapCooldown && Player_CheckValidState(player) && player->CanSwap();
 
     bool32 canPause  = canMove;
     Vector2 superPos = modSVars->superPos;
-    Vector2 swapPos  = modSVars->swapPos;
 
     ControllerState *controller = &controllerInfo[player->controllerID];
 
     if (canMove) {
-        if (modSVars->dpadAlpha[playerID] < opacity)
-            modSVars->dpadAlpha[playerID] += 4;
+        if ((sceneInfo->state & 3) == ENGINESTATE_REGULAR) {
+            if (modSVars->dpadAlpha[playerID] < opacity)
+                modSVars->dpadAlpha[playerID] += 4;
 
-        // Draw DPad
-        this->alpha                    = modSVars->dpadAlpha[playerID];
-        modSVars->dpadAnimator.frameID = 10;
-        modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
-
-        if (player->classID == Player::sVars->classID ? player->left : controller->keyLeft.down) {
-            this->alpha                         = opacity;
-            modSVars->dpadTouchAnimator.frameID = 6;
-            modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
-        } else {
+            // Draw DPad
             this->alpha                    = modSVars->dpadAlpha[playerID];
-            modSVars->dpadAnimator.frameID = 6;
+            modSVars->dpadAnimator.frameID = 10;
             modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
-        }
-
-        if (player->classID == Player::sVars->classID ? player->down : controller->keyDown.down) {
-            this->alpha                         = opacity;
-            modSVars->dpadTouchAnimator.frameID = 9;
-            modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
 
             if (player->classID == Player::sVars->classID ? player->left : controller->keyLeft.down) {
-                modSVars->dpadTouchAnimator.frameID = 14;
+                this->alpha                         = opacity;
+                modSVars->dpadTouchAnimator.frameID = 6;
                 modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
-            } else if (player->classID == Player::sVars->classID ? player->right : controller->keyRight.down) {
-                modSVars->dpadTouchAnimator.frameID = 15;
+            } else {
+                this->alpha                    = modSVars->dpadAlpha[playerID];
+                modSVars->dpadAnimator.frameID = 6;
+                modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
+            }
+
+            if (player->classID == Player::sVars->classID ? player->down : controller->keyDown.down) {
+                this->alpha                         = opacity;
+                modSVars->dpadTouchAnimator.frameID = 9;
                 modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
+
+                if (player->classID == Player::sVars->classID ? player->left : controller->keyLeft.down) {
+                    modSVars->dpadTouchAnimator.frameID = 14;
+                    modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
+                } else if (player->classID == Player::sVars->classID ? player->right : controller->keyRight.down) {
+                    modSVars->dpadTouchAnimator.frameID = 15;
+                    modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
+                }
+            } else {
+                this->alpha                    = modSVars->dpadAlpha[playerID];
+                modSVars->dpadAnimator.frameID = 9;
+                modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
+            }
+
+            if (player->classID == Player::sVars->classID ? player->right : controller->keyRight.down) {
+                this->alpha                         = opacity;
+                modSVars->dpadTouchAnimator.frameID = 7;
+                modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
+            } else {
+                this->alpha                    = modSVars->dpadAlpha[playerID];
+                modSVars->dpadAnimator.frameID = 7;
+                modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
+            }
+
+            if (player->classID == Player::sVars->classID ? player->up : controller->keyUp.down) {
+                this->alpha                         = opacity;
+                modSVars->dpadTouchAnimator.frameID = 8;
+                modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
+
+                if (player->classID == Player::sVars->classID ? player->left : controller->keyLeft.down) {
+                    modSVars->dpadTouchAnimator.frameID = 12;
+                    modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
+                } else if (player->classID == Player::sVars->classID ? player->right : controller->keyRight.down) {
+                    modSVars->dpadTouchAnimator.frameID = 13;
+                    modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
+                }
+            } else {
+                this->alpha                    = modSVars->dpadAlpha[playerID];
+                modSVars->dpadAnimator.frameID = 8;
+                modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
+            }
+
+            if (player->classID == Player::sVars->classID
+                    ? (!player->up && !player->down && !player->left && !player->right)
+                    : (!controller->keyUp.down && !controller->keyDown.down && !controller->keyLeft.down && !controller->keyRight.down)) {
+                this->alpha                    = modSVars->dpadAlpha[playerID];
+                modSVars->dpadAnimator.frameID = 11;
+                modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
             }
         } else {
-            this->alpha                    = modSVars->dpadAlpha[playerID];
-            modSVars->dpadAnimator.frameID = 9;
-            modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
-        }
-
-        if (player->classID == Player::sVars->classID ? player->right : controller->keyRight.down) {
-            this->alpha                         = opacity;
-            modSVars->dpadTouchAnimator.frameID = 7;
-            modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
-        } else {
-            this->alpha                    = modSVars->dpadAlpha[playerID];
-            modSVars->dpadAnimator.frameID = 7;
-            modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
-        }
-
-        if (player->classID == Player::sVars->classID ? player->up : controller->keyUp.down) {
-            this->alpha                         = opacity;
-            modSVars->dpadTouchAnimator.frameID = 8;
-            modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
-
-            if (player->classID == Player::sVars->classID ? player->left : controller->keyLeft.down) {
-                modSVars->dpadTouchAnimator.frameID = 12;
-                modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
-            } else if (player->classID == Player::sVars->classID ? player->right : controller->keyRight.down) {
-                modSVars->dpadTouchAnimator.frameID = 13;
-                modSVars->dpadTouchAnimator.DrawSprite(&modSVars->dpadPos, true);
-            }
-        } else {
-            this->alpha                    = modSVars->dpadAlpha[playerID];
-            modSVars->dpadAnimator.frameID = 8;
-            modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
-        }
-
-        if (player->classID == Player::sVars->classID
-                ? (!player->up && !player->down && !player->left && !player->right)
-                : (!controller->keyUp.down && !controller->keyDown.down && !controller->keyLeft.down && !controller->keyRight.down)) {
-            this->alpha                    = modSVars->dpadAlpha[playerID];
-            modSVars->dpadAnimator.frameID = 11;
-            modSVars->dpadAnimator.DrawSprite(&modSVars->dpadPos, true);
+            modSVars->dpadAlpha[playerID] = 0;
         }
     } else {
-        if (modSVars->dpadAlpha[playerID] > 0) {
+        if (modSVars->dpadAlpha[playerID] > 0)
             modSVars->dpadAlpha[playerID] -= 4;
-        }
 
         this->alpha = modSVars->dpadAlpha[playerID];
         if (this->alpha > 0) {
@@ -518,37 +505,9 @@ void HUD::DrawTouchControls(void) {
         }
     }
 
-    if (canSwap) {
-        if ((sceneInfo->state & 3) == ENGINESTATE_REGULAR) {
-            if (modSVars->swapAlpha[playerID] < opacity)
-                modSVars->swapAlpha[playerID] += 4;
-
-            if (player->onGround && controllerInfo[player->controllerID].keyY.down) {
-                this->alpha                         = opacity;
-                modSVars->dpadTouchAnimator.frameID = 4;
-                modSVars->dpadTouchAnimator.DrawSprite(&swapPos, true);
-            } else {
-                this->alpha                    = modSVars->swapAlpha[playerID];
-                modSVars->dpadAnimator.frameID = 4;
-                modSVars->dpadAnimator.DrawSprite(&swapPos, true);
-            }
-        } else {
-            modSVars->swapAlpha[playerID] = 0;
-        }
-    } else {
-        if (modSVars->swapAlpha[playerID] > 0)
-            modSVars->swapAlpha[playerID] -= 4;
-
-        this->alpha = modSVars->swapAlpha[playerID];
-        if (this->alpha > 0) {
-            modSVars->dpadAnimator.frameID = 4;
-            modSVars->dpadAnimator.DrawSprite(&swapPos, true);
-        }
-    }
-
     if (canPause) {
         if ((sceneInfo->state & 3) == ENGINESTATE_REGULAR) {
-            if (modSVars->pauseAlpha[playerID] < opacity)
+            if (modSVars->pauseAlpha[playerID] < 255)
                 modSVars->pauseAlpha[playerID] += 8;
 
             this->alpha                         = modSVars->pauseAlpha[playerID];
