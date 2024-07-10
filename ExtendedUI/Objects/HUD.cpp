@@ -174,21 +174,21 @@ void HUD::DrawMobile(void) {
     if (sceneInfo->debugMode) {
         if (player->camera) {
             // Draw Camera YPos
-            drawPos.x = TO_FIXED(screenInfo[player->camera->screenID].size.x - 16);
-            drawPos.y = 0x290000;
+            drawPos.x.whole = screenInfo[player->camera->screenID].size.x - 16;
+            drawPos.y.whole = 0x2B;
             HUD_DrawNumbersBase16(this, &drawPos, screenInfo[player->camera->screenID].position.y);
 
             // Draw Camera XPos
-            drawPos.x -= 0x90000;
+            drawPos.x.whole -= 9;
             HUD_DrawNumbersBase16(this, &drawPos, screenInfo[player->camera->screenID].position.x);
 
             // Draw Player YPos
-            drawPos.x = TO_FIXED(screenInfo[player->camera->screenID].size.x - 16);
-            drawPos.y += 0x100000;
+            drawPos.x.whole = screenInfo[player->camera->screenID].size.x - 16;
+            drawPos.y.whole += 16;
             HUD_DrawNumbersBase16(this, &drawPos, FROM_FIXED(player->position.y));
 
             // Draw Player XPos
-            drawPos.x -= 0x90000;
+            drawPos.x.whole -= 9;
             HUD_DrawNumbersBase16(this, &drawPos, FROM_FIXED(player->position.x));
         }
     } else if (this->actionPromptPos > -0x400000 && globals->gameMode == MODE_TIMEATTACK) {
@@ -304,24 +304,10 @@ void HUD::DrawMobile(void) {
                 case GAME_S3:
                 case GAME_SK:
                     this->lifeNamesAnimator.DrawSprite(&drawPos, true);
-                    this->hudElementsAnimator.frameID = 14;
-
-                    this->hudElementsAnimator.DrawSprite(&drawPos, true); // X
+                    this->hudElementsAnimator.frameID = 14; // X
+                    this->hudElementsAnimator.DrawSprite(&drawPos, true);
                     drawPos.x += 0x290000;
                     HUD_DrawNumbersBase10(&this->lifeNumbersAnimator, &drawPos, lives, 0);
-
-                    /*
-                    if (globals->useCoins) {
-                        drawPos.x = 0xE0000;
-                        this->hudElementsAnimator.DrawSprite(&drawPos, true); // X
-                        drawPos.x = 0x3A0000;
-                        HUD_DrawNumbersBase10(&this->lifeNumbersAnimator, &drawPos, lives, 0);
-                    } else {
-                        this->hudElementsAnimator.DrawSprite(&drawPos, true); // X
-                        drawPos.x += 0x290000;
-                        HUD_DrawNumbersBase10(&this->lifeNumbersAnimator, &drawPos, lives, 0);
-                    }
-                    */
                     break;
             }
         }

@@ -2,11 +2,6 @@
 
 using namespace RSDK;
 
-// Here's where everything touch related is stored
-// this is based on MTC, the name 3KTC is right there...
-// unfortunately, this mod doesn't only handle touch
-// controls. It also adds a pause menu to the game, soooooo
-
 namespace GameLogic {
 
 int8 dirPressed = 0b0000;

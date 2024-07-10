@@ -7,8 +7,13 @@ using namespace RSDK;
 // Macros/Definitions
 // ------------------
 
-#define CheckTouchPause() (Touch::CheckRect(screenInfo->size.x - 0x80, 0, screenInfo->size.x, 0x40, 0, 0) >= 0)
-#define CheckAnyTouch()   (Touch::CheckRect(0, 0, screenInfo->size.x, screenInfo->size.y, 0, 0) >= 0)
+// #define CheckTouchPause() (Touch::CheckRect(screenInfo->size.x - 0x80, 0, screenInfo->size.x, 0x40, 0, 0) >= 0)
+
+#define CheckTouchPause()                                                                                                                            \
+    (!sceneInfo->debugMode ? Touch::CheckRect(screenInfo->size.x - 0x80, 0, screenInfo->size.x, 0x40, 0, 0) >= 0                                     \
+                           : Touch::CheckRect(screenInfo->size.x - 0x80, 0, screenInfo->size.x, 0x20, 0, 0) >= 0)
+
+#define CheckAnyTouch() (Touch::CheckRect(0, 0, screenInfo->size.x, screenInfo->size.y, 0, 0) >= 0)
 
 namespace GameLogic {
 struct Touch {

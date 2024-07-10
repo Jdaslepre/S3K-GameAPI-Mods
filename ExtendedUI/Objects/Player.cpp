@@ -1366,17 +1366,14 @@ bool32 Player_Input_Gamepad_Hook(bool32 skippedState) {
         // bool32 canSuper = Player_CanTransform(self) && !self->onGround;
         // bool32 canSwap  = Player_CanSwap(self) && globals->gameMode == MODE_ENCORE;
 
-        bool32 canSuper = false;
-        bool32 canSwap  = false;
+        bool32 canSuper       = false;
+        bool32 canSwapGravity = sceneInfo->debugMode;
 
         int32 jumpX = screenInfo->center.x;
         int32 jumpY = 96;
 
         if (canSuper)
             jumpX = screenInfo[self->playerID].size.x + config.jumpDPadPos.x - 48;
-
-        if (canSwap)
-            jumpY = config.jumpDPadPos.y - 48;
 
         // fixes a bug with button vs touch
         bool32 touchedJump = false;
@@ -1419,15 +1416,15 @@ bool32 Player_Input_Gamepad_Hook(bool32 skippedState) {
             Player::modSVars->touchSuper = 0;
         }
 
-        bool32 touchedSwap = false;
-        if (canSwap) {
-            if (Touch::CheckRect(jumpX, jumpY - 64, screenInfo->size.x, jumpY, NULL, NULL) >= 0) {
+        bool32 touchedGrav = false;
+        if (canSwapGravity) {
+            if (Touch::CheckRect(screenInfo->size.x - 0x80, 0x20, screenInfo->size.x, 0x40, NULL, NULL) >= 0) {
                 controllerInfo->keyY.down |= true;
                 controller->keyY.down = true;
-                touchedSwap           = true;
+                touchedGrav           = true;
             }
 
-            if (!Player::modSVars->touchSwap && touchedSwap) {
+            if (!Player::modSVars->touchSwap && touchedGrav) {
                 controllerInfo->keyY.press |= controllerInfo->keyY.down;
                 controller->keyY.press |= controller->keyY.down;
             }

@@ -16,6 +16,8 @@ DLLExport bool32 LinkModLogic(RSDK::EngineInfo *info, const char *modID);
 // Forward Declarations
 namespace GameLogic {
 
+RSDK_TYPEDEF(Touch);
+
 RSDK_TYPEDEF(Camera);
 RSDK_TYPEDEF(DebugMode);
 RSDK_TYPEDEF(HUD);
@@ -25,8 +27,8 @@ RSDK_TYPEDEF(S1SS_Player);
 RSDK_TYPEDEF(S3K_SS_HUD);
 RSDK_TYPEDEF(S3K_SS_Player);
 RSDK_TYPEDEF(SlotHUD);
-RSDK_TYPEDEF(Touch);
 RSDK_TYPEDEF(TitleElement);
+RSDK_TYPEDEF(TitleSeq);
 
 } // namespace GameLogic
 
@@ -42,3 +44,5 @@ RSDK_TYPEDEF(TitleElement);
 #include "Objects/S3K_SS_HUD.hpp"
 #include "Objects/S3K_SS_Player.hpp"
 #include "Objects/SlotHUD.hpp"
+#include "Objects/TitleElement.hpp"
+#include "Objects/TitleSeq.hpp"

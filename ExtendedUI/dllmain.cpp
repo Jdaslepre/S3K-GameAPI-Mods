@@ -47,6 +47,9 @@ bool32 LinkModLogic(RSDK::EngineInfo *info, const char *modID) {
     GetPublicFuncAssign(LevelSelect_State_Navigate, NULL, "LevelSelect::State_Navigate");
     GetPublicFuncAssign(Player_Input_Gamepad, NULL, "Player::Input_Gamepad");
     GetPublicFuncAssign(S3K_SS_Player_Input_Gamepad, NULL, "S3K_SS_Player::Input_Gamepad");
+    GetPublicFuncAssign(TitleSeq_State_WaitSEGA, NULL, "TitleSeq::State_WaitSEGA");
+    GetPublicFuncAssign(TitleSeq_State_Animate, NULL, "TitleSeq::State_Animate");
+    GetPublicFuncAssign(TitleSeq_State_WaitEx, NULL, "TitleSeq::State_WaitEx");
 
     config.usePathTracer = static_cast<bool*>(Mod::GetPublicFunction(0, "usePathTracer"));
 
@@ -65,6 +68,9 @@ bool32 LinkModLogic(RSDK::EngineInfo *info, const char *modID) {
     Mod::RegisterStateHook(LevelSelect_State_Navigate, LevelSelect_State_Navigate_Hook, true);
     Mod::RegisterStateHook(Player_Input_Gamepad, Player_Input_Gamepad_Hook, true);
     Mod::RegisterStateHook(S3K_SS_Player_Input_Gamepad, S3K_SS_Player_Input_Gamepad_Hook, true);
+    Mod::RegisterStateHook(TitleSeq_State_WaitSEGA, TitleSeq_State_WaitSEGA_Hook, true);
+    Mod::RegisterStateHook(TitleSeq_State_Animate, TitleSeq_CheckSkip, true);
+    Mod::RegisterStateHook(TitleSeq_State_WaitEx, TitleSeq_CheckSkip, true);
 
     return true;
 }

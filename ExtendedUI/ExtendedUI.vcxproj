@@ -184,6 +184,8 @@
     <ClCompile Include="Objects\S3K_SS_HUD.cpp" />
     <ClCompile Include="Objects\S3K_SS_Player.cpp" />
     <ClCompile Include="Objects\SlotHUD.cpp" />
+    <ClCompile Include="Objects\TitleElement.cpp" />
+    <ClCompile Include="Objects\TitleSeq.cpp" />
     <ClCompile Include="Touch.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +204,8 @@
     <ClInclude Include="Objects\S3K_SS_HUD.hpp" />
     <ClInclude Include="Objects\S3K_SS_Player.hpp" />
     <ClInclude Include="Objects\SlotHUD.hpp" />
+    <ClInclude Include="Objects\TitleElement.hpp" />
+    <ClInclude Include="Objects\TitleSeq.hpp" />
     <ClInclude Include="Touch.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -14,12 +14,6 @@ MOD_REGISTER_OBJECT(LevelSelect);
 // Standard Entity Events
 // ----------------------
 
-void LevelSelect::Update(void) {
-    //
-    //
-    sVars->Super(SUPER_UPDATE);
-}
-
 void LevelSelect::Draw(void) {
 
     int32 prevInfo[3];
@@ -192,7 +186,7 @@ bool32 LevelSelect_State_Navigate_Hook(bool32 skippedState) {
     }
 
     // Go/Start button
-    if (Touch::CheckRect(0, 0, screenInfo->size.x, screenInfo->size.y, NULL, NULL) >= 0) {
+    if (CheckAnyTouch()) {
         int32 x1 = screenInfo->size.x - 62;
         int32 x2 = x1 + 48;
 

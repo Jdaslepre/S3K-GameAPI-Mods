@@ -104,7 +104,6 @@ struct LevelSelect : GameObject::Entity {
     // Standard Entity Events
     // ----------------------
 
-    void Update(void);
     void Draw(void);
     static void StageLoad(void);
     static void StaticLoad(Static *sVars);
