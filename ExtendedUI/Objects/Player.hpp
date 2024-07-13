@@ -513,6 +513,13 @@ struct Player : GameObject::Entity {
 
     static void StaticLoad(Static *sVars);
 
+    // -------------
+    // Object States
+    // -------------
+
+    static Action<void> State_Victory;
+    static Action<void> Input_Gamepad;
+
     // ----------------------
     // Extra Entity Functions
     // ----------------------
@@ -531,9 +538,7 @@ struct Player : GameObject::Entity {
 // Public Functions
 // ----------------
 
-extern void (*Player_State_Victory)(void);
-extern void (*Player_Input_Gamepad)(void);
-extern bool32 (*Player_CheckValidState)(Player* player);
+extern bool32 (*Player_CheckValidState)(Player *player);
 
 // ----------------------
 // Extra Entity Functions

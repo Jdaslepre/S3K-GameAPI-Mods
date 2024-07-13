@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -348,14 +348,14 @@ void HUD::DrawTouchControls(void) {
     this->scale.x = (int32)(0x200 * config.vDPadSize);
     this->scale.y = (int32)(0x200 * config.vDPadSize);
 
-    bool32 canMove = StateMatchesExt<Player>(&player->stateInput, Player_Input_Gamepad);
-    canMove &= ~StateMatchesExt<Player>(&player->state, Player_State_Victory);
+    bool32 canMove = player->stateInput.Matches(Player::Input_Gamepad.action);
+    canMove &= player->state.Matches(Player::State_Victory.action) == false;
 
-    bool32 canJump = StateMatchesExt<Player>(&player->stateInput, Player_Input_Gamepad);
-    canMove &= ~StateMatchesExt<Player>(&player->state, Player_State_Victory);
+    bool32 canJump = player->stateInput.Matches(Player::Input_Gamepad.action);
+    canJump &= player->state.Matches(Player::State_Victory.action) == false;
 
-    bool32 canSuper = canJump && player->CanTransform();
-    bool32 canSwap  = canJump && globals->gameMode == MODE_ENCORE && !sVars->swapCooldown && Player_CheckValidState(player) && player->CanSwap();
+    bool32 canSuper = (canJump && player->CanTransform()) == true;
+    bool32 canSwap  = (canJump && globals->gameMode == MODE_ENCORE && !sVars->swapCooldown && Player_CheckValidState(player) && player->CanSwap()) == true;
 
     bool32 canPause  = canMove;
     Vector2 superPos = modSVars->superPos;

@@ -108,18 +108,18 @@ struct LevelSelect : GameObject::Entity {
     static void StageLoad(void);
     static void StaticLoad(Static *sVars);
 
+    // -------------
+    // Object States
+    // -------------
+
+    static Action<void> State_Navigate;
+
     // -------------------
     // Static Declarations
     // -------------------
 
     MOD_DECLARE(LevelSelect)
 };
-
-// ----------------
-// Public Functions
-// ----------------
-
-extern void (*LevelSelect_State_Navigate)(void);
 
 // ----------------------
 // Extra Entity Functions

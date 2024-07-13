@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -10,11 +10,11 @@ namespace GameLogic {
 
 MOD_REGISTER_OBJECT(S3K_SS_Player);
 
-// ----------------
-// Public Functions
-// ----------------
+// -------------
+// Object States
+// -------------
 
-void (*S3K_SS_Player_Input_Gamepad)() = nullptr;
+Action<void> S3K_SS_Player::Input_Gamepad;
 
 // ----------------------
 // Extra Entity Functions

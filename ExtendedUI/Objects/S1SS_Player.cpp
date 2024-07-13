@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -9,6 +9,12 @@ namespace GameLogic {
 // -------------------
 
 MOD_REGISTER_OBJECT(S1SS_Player);
+
+// -------------
+// Object States
+// -------------
+
+Action<void> S1SS_Player::State_Static;
 
 // ----------------------
 // Standard Entity Events

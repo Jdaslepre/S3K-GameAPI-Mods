@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -9,6 +9,14 @@ namespace GameLogic {
 // -------------------
 
 MOD_REGISTER_OBJECT(TitleSeq);
+
+// -------------
+// Object States
+// -------------
+
+Action<void> TitleSeq::State_WaitSEGA;
+Action<void> TitleSeq::State_Animate;
+Action<void> TitleSeq::State_WaitEx;
 
 // ----------------------
 // Standard Entity Events
@@ -58,14 +66,6 @@ void TitleSeq::StaticLoad(Static *sVars) {
     sVars->seqCountUnknown2    = 0;
 }
 
-// ----------------
-// Public Functions
-// ----------------
-
-void (*TitleSeq_State_WaitSEGA)(void) = nullptr;
-void (*TitleSeq_State_Animate)(void)  = nullptr;
-void (*TitleSeq_State_WaitEx)(void)   = nullptr;
-
 // ----------------------
 // Extra Entity Functions
 // ----------------------
@@ -104,35 +104,6 @@ void TitleSeq::CheckTouchCheatCodes(void) {
             modSVars->levelSelectCheatPos++;
 
             if (modSVars->levelSelectCheatPos == 4) {
-                sVars->sfxRing.Play(false, 255);
-                globals->soundTestEnabled = true;
-            }
-        }
-
-        // Match level select (SEGA)
-        switch (modSVars->levelSelectCheatPos) {
-            case 0: // S
-                pos -= 88;
-                len = pos + 40;
-                break;
-            case 1: // E
-                pos -= 46;
-                len = pos + 38;
-                break;
-            case 2: // G
-                pos -= 6;
-                len = pos + 40;
-                break;
-            case 3: // A
-                pos += 34;
-                len = pos + 55;
-                break;
-        }
-
-        if (Touch::CheckRect(pos, 90, len, 160, NULL, NULL) >= 0) {
-            modSVars->touchDown = true;
-
-            if (++modSVars->levelSelectCheatPos == 4) {
                 sVars->sfxRing.Play(false, 255);
                 globals->soundTestEnabled = true;
             }

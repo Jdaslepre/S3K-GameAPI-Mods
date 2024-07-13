@@ -61,6 +61,14 @@ struct TitleSeq : GameObject::Entity {
     void Create(void *data);
     static void StaticLoad(Static *sVars);
 
+    // -------------
+    // Object States
+    // -------------
+
+    static Action<void> State_WaitSEGA;
+    static Action<void> State_Animate;
+    static Action<void> State_WaitEx;
+
     // ----------------------
     // Extra Entity Functions
     // ----------------------
@@ -73,14 +81,6 @@ struct TitleSeq : GameObject::Entity {
 
     MOD_DECLARE(TitleSeq)
 };
-
-// ----------------
-// Public Functions
-// ----------------
-
-extern void (*TitleSeq_State_WaitSEGA)(void);
-extern void (*TitleSeq_State_Animate)(void);
-extern void (*TitleSeq_State_WaitEx)(void);
 
 // ----------------------
 // Extra Entity Functions

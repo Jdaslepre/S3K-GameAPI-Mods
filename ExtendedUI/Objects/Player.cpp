@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -10,12 +10,17 @@ namespace GameLogic {
 
 MOD_REGISTER_OBJECT(Player);
 
+// -------------
+// Object States
+// -------------
+
+Action<void> Player::State_Victory;
+Action<void> Player::Input_Gamepad;
+
 // ----------------
 // Public Functions
 // ----------------
 
-void (*Player_State_Victory)(void)               = nullptr;
-void (*Player_Input_Gamepad)(void)               = nullptr;
 bool32 (*Player_CheckValidState)(Player *player) = nullptr;
 
 // ----------------------

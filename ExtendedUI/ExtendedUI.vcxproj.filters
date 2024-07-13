@@ -7,7 +7,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Touch.cpp">
+    <ClCompile Include="touch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Player.cpp">
@@ -54,16 +54,16 @@
     <ClInclude Include="..\GameAPI\CPP\GameAPI\GameVariables.hpp">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="cfg.hpp">
+    <ClInclude Include="config.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameAPIExtensions.hpp">
+    <ClInclude Include="extensions.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mod.hpp">
+    <ClInclude Include="3KTC.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Touch.hpp">
+    <ClInclude Include="touch.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Player.hpp">

@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -9,6 +9,12 @@ namespace GameLogic {
 // -------------------
 
 MOD_REGISTER_OBJECT(LevelSelect);
+
+// -------------
+// Object States
+// -------------
+
+Action<void> LevelSelect::State_Navigate;
 
 // ----------------------
 // Standard Entity Events

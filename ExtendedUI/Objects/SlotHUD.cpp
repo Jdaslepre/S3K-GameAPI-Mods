@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -188,11 +188,11 @@ void SlotHUD::DrawTouchControls(void) {
     this->scale.x = (int32)(0x200 * config.vDPadSize);
     this->scale.y = (int32)(0x200 * config.vDPadSize);
 
-    bool32 canMove = StateMatchesExt<S1SS_Player>(&player->stateInput, Player_Input_Gamepad);
-    // canMove &= !StateMatchesExt<S1SS_Player>(&player->state, S1SS_Player_State_Static);
+    bool32 canMove = player->stateInput.Matches(Player::Input_Gamepad.action);
+    canMove &= player->state.Matches(S1SS_Player::State_Static.action) == false;
 
-    bool32 canJump = StateMatchesExt<S1SS_Player>(&player->stateInput, Player_Input_Gamepad);
-    // canMove &= !StateMatchesExt<S1SS_Player>(&player->state, S1SS_Player_State_Static);
+    bool32 canJump = player->stateInput.Matches(Player::Input_Gamepad.action);
+    canJump &= player->state.Matches(S1SS_Player::State_Static.action) == false;
 
     bool32 canPause = canMove;
 

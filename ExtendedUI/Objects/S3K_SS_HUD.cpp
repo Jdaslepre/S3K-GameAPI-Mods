@@ -1,4 +1,4 @@
-#include "../Mod.hpp"
+#include "../3KTC.hpp"
 
 using namespace RSDK;
 
@@ -61,7 +61,7 @@ void S3K_SS_HUD::DrawTouchControls(void) {
     this->scale.x = (int32)(0x200 * config.vDPadSize);
     this->scale.y = (int32)(0x200 * config.vDPadSize);
 
-    bool32 enabled = StateMatchesExt<S3K_SS_Player>(&player->stateInput, S3K_SS_Player_Input_Gamepad);
+    bool32 enabled = player->stateInput.Matches(S3K_SS_Player::Input_Gamepad.action);
     if (enabled) {
         if ((sceneInfo->state & 3) == ENGINESTATE_REGULAR) {
             if (modSVars->dpadAlpha < opacity) {

@@ -1,7 +1,7 @@
 #pragma once
 #include "GameAPI/Game.hpp"
-#include "cfg.hpp"
-#include "GameAPIExtensions.hpp"
+#include "config.hpp"
+#include "extensions.hpp"
 
 #if RETRO_USE_MOD_LOADER
 extern "C" {

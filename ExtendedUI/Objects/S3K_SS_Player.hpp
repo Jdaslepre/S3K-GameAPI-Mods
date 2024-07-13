@@ -48,18 +48,18 @@ struct S3K_SS_Player : GameObject::Entity {
     SpriteAnimation aniFrames;
     int32 characterID;
 
+    // -------------
+    // Object States
+    // -------------
+
+    static Action<void> Input_Gamepad;
+
     // -------------------
     // Static Declarations
     // -------------------
 
     MOD_DECLARE(S3K_SS_Player)
 };
-
-// ----------------
-// Public Functions
-// ----------------
-
-extern void (*S3K_SS_Player_Input_Gamepad)(void);
 
 // ----------------------
 // Extra Entity Functions

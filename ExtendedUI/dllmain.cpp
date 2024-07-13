@@ -1,5 +1,5 @@
 #pragma once
-#include "Mod.hpp"
+#include "3KTC.hpp"
 
 GlobalVariables *globals = nullptr;
 ModConfig config;
@@ -44,14 +44,8 @@ bool32 LinkModLogic(RSDK::EngineInfo *info, const char *modID) {
     GetPublicFuncAssign(HUD_DrawNumbersBase10, NULL, "HUD::DrawNumbersBase10");
     GetPublicFuncAssign(HUD_DrawNumbersBase16, NULL, "HUD::DrawNumbersBase16");
     GetPublicFuncAssign(HUD_CharacterIndexFromID, NULL, "HUD::CharacterIndexFromID");
-    GetPublicFuncAssign(LevelSelect_State_Navigate, NULL, "LevelSelect::State_Navigate");
-    GetPublicFuncAssign(Player_Input_Gamepad, NULL, "Player::Input_Gamepad");
-    GetPublicFuncAssign(S3K_SS_Player_Input_Gamepad, NULL, "S3K_SS_Player::Input_Gamepad");
-    GetPublicFuncAssign(TitleSeq_State_WaitSEGA, NULL, "TitleSeq::State_WaitSEGA");
-    GetPublicFuncAssign(TitleSeq_State_Animate, NULL, "TitleSeq::State_Animate");
-    GetPublicFuncAssign(TitleSeq_State_WaitEx, NULL, "TitleSeq::State_WaitEx");
 
-    config.usePathTracer = static_cast<bool*>(Mod::GetPublicFunction(0, "usePathTracer"));
+    config.usePathTracer = static_cast<bool *>(Mod::GetPublicFunction(0, "usePathTracer"));
 
     // --------------------
     // Set Public Functions
@@ -61,16 +55,29 @@ bool32 LinkModLogic(RSDK::EngineInfo *info, const char *modID) {
     // this should be fine to do i think...
     Mod::AddPublicFunction("useTouchControls", INT_TO_VOID(config.useTouchControls));
 
+    // -----------------
+    // Get Object States
+    // -----------------
+
+    LevelSelect::State_Navigate.Set(Ext::PubFunc<Type_VoidPtr>("LevelSelect::State_Navigate"));
+    Player::State_Victory.Set(Ext::PubFunc<Type_VoidPtr>("Player::State_Victory"));
+    Player::Input_Gamepad.Set(Ext::PubFunc<Type_VoidPtr>("Player::Input_Gamepad"));
+    S1SS_Player::State_Static.Set(Ext::PubFunc<Type_VoidPtr>("S1SS_Player::State_Static"));
+    S3K_SS_Player::Input_Gamepad.Set(Ext::PubFunc<Type_VoidPtr>("S3K_SS_Player::Input_Gamepad"));
+    TitleSeq::State_WaitSEGA.Set(Ext::PubFunc<Type_VoidPtr>("TitleSeq::State_WaitSEGA"));
+    TitleSeq::State_Animate.Set(Ext::PubFunc<Type_VoidPtr>("TitleSeq::State_Animate"));
+    TitleSeq::State_WaitEx.Set(Ext::PubFunc<Type_VoidPtr>("TitleSeq::State_WaitEx"));
+
     // --------------------
     // Register State Hooks
     // --------------------
 
-    Mod::RegisterStateHook(LevelSelect_State_Navigate, LevelSelect_State_Navigate_Hook, true);
-    Mod::RegisterStateHook(Player_Input_Gamepad, Player_Input_Gamepad_Hook, true);
-    Mod::RegisterStateHook(S3K_SS_Player_Input_Gamepad, S3K_SS_Player_Input_Gamepad_Hook, true);
-    Mod::RegisterStateHook(TitleSeq_State_WaitSEGA, TitleSeq_State_WaitSEGA_Hook, true);
-    Mod::RegisterStateHook(TitleSeq_State_Animate, TitleSeq_CheckSkip, true);
-    Mod::RegisterStateHook(TitleSeq_State_WaitEx, TitleSeq_CheckSkip, true);
+    Ext::StateHook<void, LevelSelect>(LevelSelect::State_Navigate, LevelSelect_State_Navigate_Hook, true);
+    Ext::StateHook<void, Player>(Player::Input_Gamepad, Player_Input_Gamepad_Hook, true);
+    Ext::StateHook<void, S3K_SS_Player>(S3K_SS_Player::Input_Gamepad, S3K_SS_Player_Input_Gamepad_Hook, true);
+    Ext::StateHook<void, TitleSeq>(TitleSeq::State_WaitSEGA, TitleSeq_State_WaitSEGA_Hook, true);
+    Ext::StateHook<void, TitleSeq>(TitleSeq::State_Animate, TitleSeq_CheckSkip, true);
+    Ext::StateHook<void, TitleSeq>(TitleSeq::State_WaitEx, TitleSeq_CheckSkip, true);
 
     return true;
 }

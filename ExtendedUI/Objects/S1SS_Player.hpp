@@ -94,6 +94,12 @@ struct S1SS_Player : GameObject::Entity {
     void Update(void);
     static void StaticLoad(Static *sVars);
 
+    // -------------
+    // Object States
+    // -------------
+
+    static Action<void> State_Static;
+
     // ----------------------
     // Extra Entity Functions
     // ----------------------
